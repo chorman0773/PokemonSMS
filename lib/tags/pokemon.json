@@ -1,0 +1,27 @@
+{
+	"tags":{
+		"pokemon":{
+			"banned":[
+				"system:pokemon/null"
+			],
+			"nonshiny":[
+				"pokemon:arceus",
+				"pokemon:thundera",
+				"pokemon:flarera",
+				"pokemon:hydrora",
+				"pokemon:mew"
+			],
+			"raeyes":[
+				"pokemon:thundera",
+				"pokemon:flarera",
+				"pokemon:hydrora"
+			],
+			"legendary":[
+				"pokemon:articuno",
+				"pokemon:zapdos",
+				"pokemon:moltres",
+				"#pokemon:raeyes"
+			]
+		}
+	}
+}

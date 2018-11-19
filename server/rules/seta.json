@@ -1,0 +1,35 @@
+{
+	"info":{
+		"name":{
+			"type":"translateble",
+			"text":"rules.tier.ut"
+		}
+	},
+	"banned":[
+		{
+			"type":"item",
+			"target":"pokemon:berry2",
+			"data":10
+		},
+		{
+			"type":"category",
+			"target":"server:category/pokemon/event"
+		},
+		{
+			"type":"category",
+			"target":"server:category/pokemon/unobtainable"
+		},
+		{
+			"type":"category",
+			"target":"server:category/gbanned"
+		},
+		{
+			"type":"category",
+			"target":"server:category/null"
+		}
+	],
+	"battle":{
+		"style":"single",
+		"maxteam":3
+	}
+}

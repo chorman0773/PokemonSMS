@@ -1,0 +1,61 @@
+{
+	"event-info":{
+		"type":"password",
+		"key":"0BB9903857CE981916412E6843F558FDF2EDC05DBADE5538EA5F041011A69C70",
+		"password-salt":"HJ3SFIQ8CUOQO4P3E1R9P1HDO5TKMU6I2BF8316YIO12592W0GDOT2N4CNQWLQMNKP28QIBCDE2MKTF4VIJ8RXYPS4XRVVWYLSKR",
+		"distribution":{
+			"start": "1/25/2018, 14:14:35GMT-05:00",
+			"end": "10/27/2018, 23:59:59GMT-05:00",
+			"distribution-level":"admin",
+			"wonder-card":{
+				"name":{
+					"type":"formatted",
+					"formatting":{
+						"color":"gold",
+						"bold":"true"
+					},
+					"text":"Event Test"
+				},
+				"description":{
+					"type":"raw",
+					"text":"Hello World! This is an event Pokemon"
+				}
+			}
+		}
+	},
+	"event":{
+		"type":"pokemon",
+		"data":{
+			"id":"system:pokemon/null",
+			"level":1,
+			"experience":0,
+			"moves":[
+				{
+					"id":"system:moves/null"
+				}
+			],
+			"individuality":{
+				"pkmid":0
+			},
+			"ability":"system:abilities/null",
+			"ot":{
+				"id":0,
+				"sid":0,
+				"name":{
+					"type":"formatted",
+					"formatting":{
+						"color":"purple",
+						"italics":true,
+						"bold":true
+					},
+					"text":"Test"
+				},
+				"capture-info":{
+					"faithful":true,
+					"location":"pokemon:generic",
+					"date":"2018-01-27T15:30:57.400Z"
+				}
+			}
+		}
+	}
+}

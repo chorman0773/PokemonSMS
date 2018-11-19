@@ -1,0 +1,17 @@
+{
+	"audio-group":{
+		"id":"generic.sounds",
+		"description":{
+			"type":"translateable",
+			"text":"audio.groups.sounds.description"
+		},
+		"name":{
+			"type":"translateable",
+			"text":"audio.groups.sounds.name"
+		},
+		"base-volume":0.75
+	},
+	"tree":{
+
+	}
+}

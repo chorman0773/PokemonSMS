@@ -1,0 +1,280 @@
+{
+	"i18n_info":
+	{
+		"language": "en",
+		"dialect": "us",
+		"name": "English, United States"
+	},
+
+	"entries":
+	{
+		"traits":
+		{
+			"tree":
+			{
+				"explosion":
+				{
+					"tree":
+					{
+						"tag":
+						{
+							"component":
+							{
+								"type": "formatted",
+								"formatting":
+								{
+									"color": "dark_red",
+									"bold": "true"
+								},
+
+								"text": "Explosion"
+							}
+						},
+
+						"description":
+						{
+							"component":
+							{
+								"type": "raw",
+								"text": "A Move which creates a massive explosion by releasing all energy the user has stored \n In most cases this causes the user to faint from exhaustion",
+								"continue":
+								{
+									"type": "linesep",
+									"text": "If the user is damp enough, it is usually impossible to succeed"
+								}
+							}
+						}
+					}
+				},
+
+				"balistic":
+				{
+					"tree":
+					{
+						"tag":
+						{
+							"component":
+							{
+								"type": "formatted",
+								"formatting":
+								{
+									"color": "light_gray"
+								},
+
+								"text": "Ballistic"
+							}
+						},
+
+						"description":
+						{
+							"component":
+							{
+								"type": "raw",
+								"text": "Move utilizing a ball or bullet.",
+								"continue":
+								{
+									"type": "linesep",
+									"text": "Targets with strong armor might not be hit by these moves"
+								}
+							}
+						}
+					}
+				},
+
+				"pulse":
+				{
+					"tree":
+					{
+						"tag":
+						{
+							"component":
+							{
+								"type": "formatted",
+								"formatting":
+								{
+									"color": "dark_blue",
+									"bold": "true"
+								},
+
+								"text": "Aura/Pulse"
+							}
+						},
+
+						"description":
+						{
+							"component":
+							{
+								"type": "raw",
+								"text": "A pulse made of energy or a fluid."
+							}
+						}
+					}
+				}
+			},
+
+			"multihit":
+			{
+				"tree":
+				{
+					"tag":
+					{
+						"component":
+						{
+							"type": "formatted",
+							"formatting":
+							{
+								"color": "gold",
+								"italic": "true"
+							},
+
+							"text": "Multihit move"
+						},
+
+						"description":
+						{
+							"type": "raw",
+							"text": "A move that hits 2-5 times in a row"
+						}
+					}
+				}
+			}
+		},
+
+		"gameplay":
+		{
+			"tree":
+			{
+				"machine":
+				{
+					"tree":
+					{
+						"cantlearn":
+						{
+							"component":
+							{
+								"type": "argument",
+								"target": 0,
+								"continue":
+								{
+									"type": "raw",
+									"text": " is incompatible with ",
+									"continue":
+									{
+										"type": "argument",
+										"target": 1,
+										"continue":
+										{
+											"type": "linesep",
+											"text": "",
+											"continue":
+											{
+												"type": "argument",
+												"target": 1,
+												"continue":
+												{
+													"type": "raw",
+													"text": " cannot be used."
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"items":{
+			"tree":{
+				"machines":{
+					"tree":{
+						"generic":{
+							"component":{
+								"type":"raw",
+								"text":"Technical Machine No.",
+								"continue":{
+									"type":"argument",
+									"continue":{
+										"type":"raw",
+										"text":": ",
+										"continue":{
+											"type":"argument"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"potion":{
+					"tree":{
+						"normal":{
+							"component":{
+								"type":"raw",
+								"text":"Potion"
+							}
+						},
+						"super":{
+							"component":{
+								"type":"raw",
+								"text":"Super Potion"
+							}
+						},
+						"hyper":{
+							"component":{
+								"type":"raw",
+								"text":"Hyper Potion"
+							}
+						},
+						"max":{
+							"component":{
+								"type":"raw",
+								"text":"Max Potion"
+							}
+						},
+						"restore":{
+							"component":{
+								"type":"raw",
+								"text":"Full Restore"
+							}
+						}
+					}
+				},
+				"ether":{
+					"tree":{
+						"normal":{
+							"component":{
+								"type":"raw",
+								"text":"Ether"
+							}
+						},
+						"max":{
+							"component":{
+								"type":"raw",
+								"text":"Max Ether"
+							}
+						},
+						"elixer":{
+							"component":{
+								"type":"raw",
+								"text":"Elixer"
+							},
+							"tree":{
+								"max":{
+									"type":"raw",
+									"text":"Max Elixer"
+								}
+							}
+						}
+					}
+				},
+				"berry":{
+					"tree":{
+
+					}
+				}
+			}
+		}
+	}
+}
