@@ -133,6 +133,10 @@ local Registries = require"Registries";
 local Pokemon = {};
 
 
+local function mkForm(form,base)
+
+end
+
 ---
 --@field #Species bulbasaur
 local bulbasaur = {
@@ -161,7 +165,7 @@ local arceus = {
  }
 };
 function arceus:getImage(form)
-  return "arceus."+form
+  return "arceus."..form;
 end
 
 ---

@@ -12,12 +12,12 @@
 		},
 		{
 			"item":{
-				"id":"items:null",
+				"id":"system:item/null"
+			},
 				"reason":{
 					"type":"translateable",
 					"text":"server.blacklists.null.reason"
 				}
-			}
 		}
 	],
 	"pokemon":[
@@ -39,6 +39,19 @@
 				"info":{
 					"altpallate":"true"
 				}
+			},
+			"reason":{
+				"type":"translateable",
+				"text":"server.blacklists.lockedpkmshiny.reason"
+			}
+		},
+		{
+			"pokemon":{
+				"id":"system:pokemon/null"
+			},
+			"reason":{
+				"type":"translateable",
+				"text":"server.blacklists.null.reason"
 			}
 		}
 	]

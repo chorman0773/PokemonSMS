@@ -1,9 +1,0 @@
-{
-	"paths":{
-		"language":"lib/l18n/",
-		"audio":"lib/audio/",
-		"graphics":"lib/graphics/",
-		"lua":"lib/lua",
-		"models":"lib/graphics/pokemon/3d/"
-	}
-}
