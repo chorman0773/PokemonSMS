@@ -1,4 +1,4 @@
-#PokemonSMS Public Specification Project
+<h1>PokemonSMS Public Specification Project</h1>
 The specification documents provided here are written and provided by the PokemonSMS Public Specification Project. 
 The Project, all contained documentation and all associated "exemplar" code are (c) 2018 Connor Horman. 
 
