@@ -34,7 +34,7 @@ This document will assume knowledge of the APL.
 Packets are structured as defined in that document. 
 
 <h2>Post-Handshaking</h2>
-These packets are exchanged by the server after the handshake is completed, and the shared connection secret is exchanged. 
+These packets are exchanged by the server after the handshake is completed, and the shared secret is established. 
 
 <h3>0x00 Connect Request</h3>
 
@@ -76,12 +76,16 @@ If the server supports Sentry Accounts, and SentryAccount is not the NIL UUID, t
 If the Challenge fails, or is not responded to in a timely manner (2 seconds), than a 0x02 Connection Failed packet must be sent in response, and the connection closed. (See Sentry Webserver API, Challenging Identity). 
 Additionally, if the SentryAccount is not the NIL UUID, the SentryAccount MUST NOT be already connected to the server. 
 
-The PkmCom Version MUST be at most 1.0, and MUST be supported by the Server. 
+The PkmCom Version MUST be at most the present version of the specification, and MUST be supported by the Server. 
+Servers may implement an arbitrary version of this specification which is at most the present version, and at least that version's origin. Implementations are required to implement an arbitrary version of this specification, which is at most the present version, at at least the origin of that version. Server Implementations are also required to support all versions that released prior to that version of the specification and that have the same origin. Client Implementations are not required to support more than one version of this specification. The origin of a version is the version which has the same major component and a minor component of 0. 
 
-<h2>0x01 Connect Success</h2>
+
+
+<h3>0x01 Connect Success</h3>
 
 Clientbound 
 
-Sent to indicate that the Connection to the server was established succesfully, after the server issues any challenges based on the Provided account and 
+Sent to indicate that the Connection to the server was established succesfully, after the server issues any challenges based on the Provided account and has verified the challenge.  
+
 
 
