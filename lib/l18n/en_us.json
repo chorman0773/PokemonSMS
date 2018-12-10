@@ -182,6 +182,20 @@
 							}
 						}
 					}
+				},
+				"clock":{
+					"tree":{
+						"time":{
+							"component":{
+								"type":"raw",
+								"text":"It is currently ",
+								"continue":{
+									"type":"argument",
+									"target":1
+								}
+							}
+						}
+					}
 				}
 			}
 		},

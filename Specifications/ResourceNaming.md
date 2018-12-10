@@ -1,6 +1,6 @@
-<h1>Info and Copyright Notice</h1>
+# Info and Copyright Notice #
 
-<h2>Copyright:</h2>
+## Copyright ##
 PokemonSMS Public Specification Project, Copyright 2018 Connor Horman
 Pokemon, the Pokemon Logo, and all Official Pokemon are Copyright Nintendo and Game Freak. This Project is in no way affiliated with Nintendo or Game Freak, and disclaims all relation with the above parties. This project is intended as a Fan Game, or as Parody of Legitimate Pokemon titles, and no Concreate Game produced using this project should be considered legitimate or affiliated to the above companies, unless they provide official consent to the connection. This project, and all games produced using this specification intend no copyright infringement or Intellectual Property theft of any kind.<br/><br/>
 
@@ -26,11 +26,17 @@ You may not, under any circumstances,
 <h2>Info:</h2>
 This document defines how Entry names for the Various Entries are formed, as well as limitations on naming. 
 <br/><br/>
-<h1>Resource Naming</h1>
-<h2>Basic Overview</h2>
+# Resource Naming #
+## Basic Overview ##
 PokemonSMS uses a 2-part Resource Naming System to identify Entries into the Registries. The system is used to prevent entry clashes between differing versions, differing Core Libraries, and between Custom Injected Libraries (Modifications). 
-Each name is made up of 2 parts, the Domain, and the path. The actual name of the resource with domain "foo" and path "bar" is foo:bar. The Domain must be a valid Java Unqualified Identifier in the Ascii Charset (That is, it just start with a latin letter or an underscore, and each other character in the name must be a latin letter, a latin underscore). The path is made up of 1 or more components, separated with a /. Each component must also be a valid Java Unqualified Identifier.
-<h2>Registering Entries</h2>
+Each name is made up of 2 parts, the Domain, and the path. The actual name of the resource with domain "foo" and path "bar" is foo:bar. 
+The Domain must be a valid Java Unqualified Identifier in the Ascii Charset (That is, it just start with a latin letter or an underscore, and each other character in the name must be a latin letter, a latin number, or an underscore). 
+The path is made up of 1 or more components, separated with a /. Each component must also be a valid Java Unqualified Identifier. 
+
+Note that not all valid java unqualified identifiers are valid components of a resource location. Any resource name which has a domain or any path component that solely consists of underscores is an invalid name. 
+
+Note that in this document, the word `domain`, refers to the domain component of a resource name.  
+## Registering Entries ##
 Entries are stored in a registry, which organizes entries in bidirectional unique mappings from keys to values. Registering an Entry adds that Entry to the registry, and specifically to the domain its registered with.
 Entries are Registered if:
 <ul>
@@ -41,14 +47,14 @@ Entries are Registered if:
 When a Custom Library Injects an entry, it becomes the owner of that domain. The behavior is undefined if multiple loaded libraries inject entries into a single domain (addition restrictions on injected entries are also specified. See Reserved Domains)<br/>
 It is illegal to register more than one entry with a given name. Implementations are required to block multiple entries being registered under the same name. It is also recommended to prevent multiple identical entries from being registered under different names, though not as strictly enforced.
 
-<h2>Reserved Domains</h2>
+## Reserved Domains ##
 There are 7 Distinct Domains which have special rules about what can be added to them. These are called reserved domains. The domains are defined either to prevent ambiguity, for implementations to place custom entries in, and for other special entries.
 It is undefined behavior to add entries to any of these domains in violation of the rules for doing so.
-<h3>pokemon</h3>
+### pokemon ###
 The pokemon domain is the basic domain. All Entries presently added by the Core Libraries are placed into the pokemon domain.
 Only the Core Libraries are allowed to add entries to the pokemon domain. 
 
-<h3>system</h3>
+### system ###
 The system domain is an internal domain, which contains standardized names. 
 These entries are standard entries for which the properties are implementation defined.
 Like other internal domains, only the implementation is allowed to add entries to the system domain.
@@ -73,22 +79,47 @@ There are 12 entries into the system namespace:
 Null entries have no associated events, an implementation defined unlocalized names, and all required type dependent fields are set to valid but meaningless values.  
 Special Entries have there 
 
-<h3>impl and internal</h3>
+### impl and internal ###
 The impl and internal domains are internal domains, which is reserved for implementation specific entries. 
 Like other internal domains, entries can only be added to the impl domain by the Implementation. 
 The distiction between impl and internal is that impl entries should be shared by Implementations which are both a client and a server implementation, whereas internal entries should be reserved to one side.
 If an implementation only implements one side, there is no real distiction betwen the two domains.
 
-<h3>mod</h3>
+### mod ###
 The mod domain is reserved to prevent generic domains from being used in modifications.  No entries are specified for the mod domain, nor may any entries be added to it. 
 
-<h3>client and server</h3>
-The client and server domains are reserved standard domains, which are reserved to place single sided standard entries in. Presently, neither specifies any entries, but they are reserved for future release.
+### client and server ###
+The client and server domains are reserved standard domains, which are reserved to place single sided standard entries in. Presently, neither specifies any entries, but they are reserved for future release. 
 
-<h3>test</h3>
+Note: These domains were reserved proactively, with the intent that they may be used to store standard names that only apply to a given side (such as the names of locations). 
+It is possible that these domains will remain unused, and implementations are permitted (though strongly discouraged) from waiving the restriction on these domains, for as long as they remain unused. 
+
+### test ###
 The test domain is a standard domain which is used for testing an implementations  compliance to this Specification. 
 Only the Core Libraries are allowed to add entries to the test domain, and only when the implementation is testing as above.
 There are 1000 defined entries in the test domain, all of which are listed in the ImplementationTesting.md document.
+
+### Other Reserved Domain ###
+In the future, domains may be added to this list. This usually occurs for domains used by custom Core Libraries. 
+
+If you develop or maintain a Custom version of the PokemonSMS Core Libraries, and you would like to have your domain reserved for your library, you may submit an Issue in Github. 
+
+Please Include in the issue the following things:
+
+1. The a link to the source repository where your library is maintained
+2. The name of the domain you wish to reserve
+3. A full list of domain entries, including the name, the file that defines it, the kind of entry, and which sides the entry is defined on. 
+4. Some way of contacting you directly. 
+
+Requestee's should also prepare Gameplay footage from Multiple Complete implementations of PokemonSMS. They may link this in the request directly. If they do not, they may be requested, through a side channel, to provide this footage as proof that the library works as intended. 
+
+If a requestee would like to make this request privately, they may send the request by email to [PokemonSMS@protonmail.com](mailto:PokemonSMS@protonmail.com). 
+
+The request will be reviewed and a decision whether or not the domain will be reserved will be made on a case-by-case basis. However the following considerations should be taken into account:
+
+1. The Library should not rely on Implementation Specific Behavior, or any behavior not enforced by this specification. 
+2. The Library should either contain substantial additional content, or have a substantial userbase. 
+3. The Library should not use a common word as its domain name. This should be followed in general, as multiple sources should not register names in the same domain and common words may result in this occurring inadvertently. Reserved Domains need to ensure that they will not conflict with existing names, before they can be reserved. 
 
 
 

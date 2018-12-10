@@ -1,11 +1,11 @@
-<h1>Info and Copyright Notice</h1>
+# Info and Copyright Notice #
 
-<h2>Copyright:</h2>
+## Copyright ##
 PokemonSMS Public Specification Project, Copyright 2018 Connor Horman
 Pokemon, the Pokemon Logo, and all Official Pokemon are Copyright Nintendo and Game Freak. This Project is in no way affiliated with Nintendo or Game Freak, and disclaims all relation with the above parties. This project is intended as a Fan Game, or as Parody of Legitimate Pokemon titles, and no Concreate Game produced using this project should be considered legitimate or affiliated to the above companies, unless they provide official consent to the connection. This project, and all games produced using this specification intend no copyright infringement or Intellectual Property theft of any kind.<br/><br/>
 
 
-The PokemonSMS Save File("This Document"), provided by the PokemonSMS Public Specification Project ("This Project") is Copyright Connor Horman("The Owner"), 2018. 
+The PokemonSMS Save File Specification("This Document"), provided by the PokemonSMS Public Specification Project ("This Project") is Copyright Connor Horman("The Owner"), 2018. 
 Using the license specified by the project, you may, with only the restrictions detailed below,
 (a)Use this document to produce a complete or partial implementation of PokemonSMS, 
 (b)Use this document as reference material to create other related projects or derivative works,
@@ -23,17 +23,15 @@ You may not, under any circumstances,
 <br/><br/>
   This Document, and this project are distributed with the intention that they will be useful and complete. However this document and this project are provided on an AS-IS basis, without any warranties of Any Kind, including the implied warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. As such, any person using this document for any reason does so at their own risk.  By using this document, you explicitly agree to release The Owner, and any person who might have distributed a copy of this document to you from all liability connected with your use of this document
 <br/><br/>
-<h3>Additional Copyright Information</h3>
-This document references the ShadeNBT Specification. The ShadeNBT specification is (c) Connor Horman, licensed independently from the PokemonSMS Public Implementation Project. 
-See the copyright notice at https://github.com/chorman0773/SentryGameEngine/blob/master/specs/ShadeNBTSaveFileSpec.md for license and usage guidelines. 
-References to that specification in this file may be used under the terms of the PokemonSMS Public Specification License (above), or under the license defined there. 
-In the present version of this Document, references to that specification imply Version 1.2 of the specification.<br/>
+### Additional Copyright Information ###
+
 This document references the Named Binary Tag specification, created by Markus Person. The up to date specification can be located at https://wiki.vg/NBT. 
 In the present version of this document, references to that specification imply Version 19133, and DO NOT use GZip or zlib compression. ShadeNBT only allows for uncompressed NBT Data. The specific Specification used defines TAG_LongArray.
-<h2>Info</h2>
+
+## Info ##
 Defines the Specification for the File Format used to store PokemonSMS Savegames, The Specific Structure of a Savegame, and Save File Generalization
-<h1>Specification</h1>
-<h2>ShadeNBT Format</h2>
+# Specification #
+## ShadeNBT Format ##
 PokemonSMS stores games in the ShadeNBT format, which extends the NBT File Format defined by Markus Person. 
 Standard Save Files take the following Format:
 
@@ -46,7 +44,7 @@ struct file{
 }
 ```
 
-Given the file, magic must be exactly [0xAD 0x4E 0x42 0x54] ("\xADNBT"), otherwise the file is Ill-formed.
+Given the file, magic must be exactly `[0xAD 0x4E 0x42 0x54]` ("\xADNBT"), otherwise the file is Ill-formed.
 shadeVersion is the version of the ShadeNBT specification, in the Sentry Versioning Format. If the version represents one greater then 1.2, the file is Ill-formed.
 flags are the Shade flags. does not exist if shadeVersion specifies any version other then 1.2.
 compoundTag is the actual content of the file. Multibyte datatypes are stored in Big-Endian if the shadeVersion is not 1.2, or if flag 0x80 of the Shade Flags is clear. If The version is 1.2 and flag 0x80 in Shade Flags is set, then Multibyte datatypes are stored in Little-Endian. The `TAG_Compound` refers to the top level Compound tag in an uncompressed NBT File. The file is Ill-formed if the `TAG_Compound` cannot be parsed correctly.
@@ -64,7 +62,7 @@ struct crypto_shade_file{
 	u8 blocks[blockCount][16];
 };
 ```
-version and flags are exactly as described for standard ShadeNBT files. magic must be exactly [0xEC 0x4E 0x42 0x54] or the file is Ill-formed.
+version and flags are exactly as described for standard ShadeNBT files. magic must be exactly `[0xEC 0x4E 0x42 0x54]` or the file is Ill-formed.
 salt is the random salt for Key Derivation (see below), Iv is the initialization vector for CBC Block Chaining Mode.
 blockCount is the number of 16-byte Blocks that follow. 
 A user supplied password and the randomly generated salt are used to derive an AES-256 key by hashing that password (without a null terminator) with the salt appended using SHA-256.
@@ -100,13 +98,31 @@ Implementations may store other information in saves.pkmdb, such as global optio
 The maximum number of save slots in unspecified, but must at least be 3. 
 
 
-<h2>Save File Structure</h2>
+## Save File Structure ##
 The NBT Structure of a Save File is broken into chunks, which describe the various portions of the game. Each Portion is detailed below:
 
-<h3>Pokemon Structure</h3>
+### Pokemon Structure ###
 Pokemon stored in the Save file take the following format:
 
-<p>
-	<span></span>
-</p>	
+* (a pokemon)(compound)
+    * Species (string): The resource location that names the species of the pokemon. If  the string is not a valid resource location (see ResourceNaming.md), the resource location does not name a pokemon, or the string is `system:pokemon/null` the file is ill-formed. Must Exist, or the compound may not contain any other tags. 
+    * CatchInfo (compound): The Information describing how the pokemon was obtained
+        * TrainerId (long): The Id of the original trainer of this pokemon
+        * TrainerSid (long): The secret Id of the original trainer
+        * TrainerName (String): A String representing a text component. This is the name of the original trainer. Note that this is not matched to determine if the pokemon should be disobediant.
+        * CatchTimestampSeconds (Long): The Number of seconds since 1970-01-01T00:00:00Z which the pokemon was caught at.
+        * CatchTimestampNanos (int): The Number of nanos since the start of the second designated by CatchTimestampSeconds, which this pokemon was caught at.
+        * CatchLocation (string): A resource location that names a location. Invalid Catch Locations should be preserved and treated as `pokemon:faraway`. If the location is `system:locations/null`, then the file is ill-formed. Not set if CatchLevel is 0. 
+        * CatchFlags (byte): A bit array designating the flags applicable to the capture.  See Below for valid bitflags. 
+        * CatchLevel (short): The level then pokemon was at when it was caught. Must be a number in [0,100]. 0 means the Pokemon was "caught" as an egg.  
+        * CatchSpecies (string): A resource location identifying the Species that the pokemon was caught as. 
+    * Stats (compound): The Stats of the Pokemon
+        * Curr (Int Array): An array of 7 integers, designating the Current stats of the Pokemon. Follows Natural Stat Order (0 is attack, 1 is defense, 2 is special attack, 3 is special defense, 4 is speed, 5 is maximum hp). Index 6 designates the difference between the maximum hp and the current HP. 
+        * EffortValues (Byte Array): An array of 6 bytes, designating the Effort Values in each Stat. Follows Natural Stat ordering. 
+        * IndividualValues (Byte Array): An array of 6 bytes, designating the Individual Values in each Stat. Follows Natural Stat Ordering. 
+        * Level (Short): The level the pokemon is currently at. Must be a number in [0,100]. If Level is 0, then CatchInfo.CatchLevel must also be 0 or the file is ill-formed. 
+    * Individuality (compound): The Structure which defines the Pokemon Individuality Information
+        * BlockId (long): The First of the 2 Pokemon Individuality Ids (Block Identifier). 
+        * SlotId (long): The Second of the 2 Pokemon Individuality Ids (Slot Identifier)
+		
 

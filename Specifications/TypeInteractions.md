@@ -1,6 +1,6 @@
-<h1>Info and Copyright Notice</h1>
+# Info and Copyright Notice #
 
-<h2>Copyright:</h2>
+## Copyright ##
 PokemonSMS Public Specification Project, Copyright 2018 Connor Horman
 Pokemon, the Pokemon Logo, and all Official Pokemon are Copyright Nintendo and Game Freak. This Project is in no way affiliated with Nintendo or Game Freak, and disclaims all relation with the above parties. This project is intended as a Fan Game, or as Parody of Legitimate Pokemon titles, and no Concreate Game produced using this project should be considered legitimate or affiliated to the above companies, unless they provide official consent to the connection. This project, and all games produced using this specification intend no copyright infringement or Intellectual Property theft of any kind.<br/><br/>
 
@@ -23,6 +23,6 @@ You may not, under any circumstances,
 <br/><br/>
   This Document, and this project are distributed with the intention that they will be useful and complete. However this document and this project are provided on an AS-IS basis, without any warranties of Any Kind, including the implied warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. As such, any person using this document for any reason does so at their own risk.  By using this document, you explicitly agree to release The Owner, and any person who might have distributed a copy of this document to you from all liability connected with your use of this document
 <br/><br/>
-<h2>Info:</h2>
+## Info ##
 This document defines how various pokemon types interact in battle, 
 

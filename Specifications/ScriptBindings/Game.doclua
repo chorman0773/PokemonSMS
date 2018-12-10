@@ -1,0 +1,34 @@
+---
+-- @module Game 
+-- A Client Side Only library which can perform various miscilanious actions.
+
+---
+--@function[parent=#Game] generateProlougePokemon(species)
+--Generates a Pokemon for use in the Prolouge, which has the species given by species 
+--No Restrictions are imposed by this specification as to any values associated with the Pokemon
+--
+--Note:
+--This function may only be called during the Prolouge Sequence (defined in /lib/lua/client/Prolouge).
+--The behavior of this function outside of this sequence is indeterminate.
+--In particular, implementations may choose to take the action, ignore the action and return nil,
+--generate an error, or undefine this function entirely.  
+--@param #string species A Resource Location which names the species of pokemon to generate
+--@return Types#Pokemon the Pokemon that was generated
+--@return #nil if species is not a valid resource location, or does not name a pokemon
+
+---
+--@function[parent=#Game] createItemStack(item,count,extra)
+--Creates an item stack containing count of item, with the given extra tag
+--@param #string item A resource location that names the item to give
+--@param #number count the number of items to generate
+--@param #table extra the extra information to associate with the item
+--@return Types#ItemStack the item stack generated
+
+---
+--@function[parent=#Game] getPlayer()
+--Returns the player for the game, or nil if the game is in the Gamemode "NONE".
+--@return Types#Player the player currently in use
+
+
+
+return nil

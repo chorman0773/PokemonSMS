@@ -1,6 +1,6 @@
-<h1>Info and Copyright Notice</h1>
+# Info and Copyright Notice #
 
-<h2>Copyright:</h2>
+## Copyright ##
 PokemonSMS Public Specification Project, Copyright 2018 Connor Horman
 Pokemon, the Pokemon Logo, and all Official Pokemon are Copyright Nintendo and Game Freak. This Project is in no way affiliated with Nintendo or Game Freak, and disclaims all relation with the above parties. This project is intended as a Fan Game, or as Parody of Legitimate Pokemon titles, and no Concreate Game produced using this project should be considered legitimate or affiliated to the above companies, unless they provide official consent to the connection. This project, and all games produced using this specification intend no copyright infringement or Intellectual Property theft of any kind.<br/><br/>
 
@@ -24,12 +24,12 @@ You may not, under any circumstances,
   This Document, and this project are distributed with the intention that they will be useful and complete. However this document and this project are provided on an AS-IS basis, without any warranties of Any Kind, including the implied warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. As such, any person using this document for any reason does so at their own risk.  By using this document, you explicitly agree to release The Owner, and any person who might have distributed a copy of this document to you from all liability connected with your use of this document
 <br/><br/>
 
-<h2>Information</h2>
+## Information ##
 This is the main document of the PokemonSMS Specification, provided by the PokemonSMS Public Specification Project. This defines the minimum requirements of clients and servers, as well as linking to various subdocuments which contain the specifications of each component. 
 It is not required that this be distributed with a PokemonSMS Implementation. 
 However, it is recommended that Implementations document the supported components, and link to the relevant documents in this specification. 
 
-<h1>Complete Specification</h1>
+# Complete Specification #
 
 This, and all subdocuments define the many components of a PokemonSMS Implementation, and requirements for and restrictions as to how they are provided. 
 PokemonSMS Implementations built using this specification should work identically to other implementions, for the provided components. 
@@ -37,11 +37,6 @@ PokemonSMS Implementations built using this specification should work identicall
 The goal of this specification is to define a uniform definition for PokemonSMS Implementations, so that the Core may work independently from the Implementation.  
 It also makes it so that there is a uniform base for making similar Pokemon Fan Games, which theoretically could run on any Implementation. 
 
-<h2>Resource Naming</h2>
-<a href="https://github.com/chorman0773/PokemonSMS-Core/tree/master/Specifications/ResourceNaming.md">Main Document</a><br/>
-Resource Naming defines how Various entries in PokemonSMS, including pokemon; items; abilities; etc. are identified from within the game, save files, and the scripts. 
-The 2 part Resource naming system is used to prevent entry conflicts when different extensions are loaded. 
-It also prevents possible/future entry conflicts with the Core libraries and extensions by reserving several resource domains for various reasons. 
 
 
 

@@ -1,6 +1,6 @@
-<h1>Info and Copyright Notice</h1>
+# Info and Copyright Notice #
 
-<h2>Copyright:</h2>
+## Copyright ##
 PokemonSMS Public Specification Project, Copyright 2018 Connor Horman
 Pokemon, the Pokemon Logo, and all Official Pokemon are Copyright Nintendo and Game Freak. This Project is in no way affiliated with Nintendo or Game Freak, and disclaims all relation with the above parties. This project is intended as a Fan Game, or as Parody of Legitimate Pokemon titles, and no Concreate Game produced using this project should be considered legitimate or affiliated to the above companies, unless they provide official consent to the connection. This project, and all games produced using this specification intend no copyright infringement or Intellectual Property theft of any kind.<br/><br/>
 
@@ -24,19 +24,19 @@ You may not, under any circumstances,
   This Document, and this project are distributed with the intention that they will be useful and complete. However this document and this project are provided on an AS-IS basis, without any warranties of Any Kind, including the implied warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. As such, any person using this document for any reason does so at their own risk.  By using this document, you explicitly agree to release The Owner, and any person who might have distributed a copy of this document to you from all liability connected with your use of this document
 <br/><br/>
 
-<h2>Information</h2>
+## Information ##
 The PkmCom Concrete Protocol Definition defines how the established Client<->Server connection is used to send information and requests, and how that data is verified. 
 
-<h1>Notes</h1>
+# Notes #
 
-This Concrete Defintion relies on the PkmCom APL defined by PkmComProtocolAPL. 
+This Concrete Defintion relies on the PkmCom APL defined by PkmComProtocolApl. 
 This document will assume knowledge of the APL. 
 Packets are structured as defined in that document. 
 
-<h2>Post-Handshaking</h2>
+## Post-Handshaking ##
 These packets are exchanged by the server after the handshake is completed, and the shared secret is established. 
 
-<h3>0x00 Connect Request</h3>
+### 0x00 Connect Request ###
 
 Serverbound
 
@@ -71,7 +71,7 @@ Sends Trainer Data, optional Sentry Account Data, and optional implementation cc
 	</tr>
 </table>
 
-<h3>Rules</h3>
+#### Rules ####
 If the server supports Sentry Accounts, and SentryAccount is not the NIL UUID, the server must query the sentry account server to obtain a Challenge Key, then send a 0x04 Challenge Identity Packet. 
 If the Challenge fails, or is not responded to in a timely manner (2 seconds), than a 0x02 Connection Failed packet must be sent in response, and the connection closed. (See Sentry Webserver API, Challenging Identity). 
 Additionally, if the SentryAccount is not the NIL UUID, the SentryAccount MUST NOT be already connected to the server. 
@@ -81,7 +81,7 @@ Servers may implement an arbitrary version of this specification which is at mos
 
 
 
-<h3>0x01 Connect Success</h3>
+### 0x01 Connect Success ###
 
 Clientbound 
 

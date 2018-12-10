@@ -1,6 +1,6 @@
-<h1>Info and Copyright Notice</h1>
+# Info and Copyright Notice #
 
-<h2>Copyright:</h2>
+## Copyright ##
 PokemonSMS Public Specification Project, Copyright 2018 Connor Horman
 Pokemon, the Pokemon Logo, and all Official Pokemon are Copyright Nintendo and Game Freak. This Project is in no way affiliated with Nintendo or Game Freak, and disclaims all relation with the above parties. This project is intended as a Fan Game, or as Parody of Legitimate Pokemon titles, and no Concreate Game produced using this project should be considered legitimate or affiliated to the above companies, unless they provide official consent to the connection. This project, and all games produced using this specification intend no copyright infringement or Intellectual Property theft of any kind.<br/><br/>
 
@@ -24,28 +24,35 @@ You may not, under any circumstances,
   This Document, and this project are distributed with the intention that they will be useful and complete. However this document and this project are provided on an AS-IS basis, without any warranties of Any Kind, including the implied warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. As such, any person using this document for any reason does so at their own risk.  By using this document, you explicitly agree to release The Owner, and any person who might have distributed a copy of this document to you from all liability connected with your use of this document
 <br/><br/>
 
-<h2>Information</h2>
+## Information ##
 This document defines how implementations are to handle lua standard libraries and lua standard globals, as well as how lua script files are handled and interpreted.
 
-<h2>Note</h2>
+## Note ##
 This file references the lua files defined by the PokemonSMS Core Libraries, and by extension libraries as "Lua Source Files" or "source files". Restrictions defined by this part of the specification ONLY apply to these such files and are not required to be honored for any implementation provided lua files (this makes it possible for PokemonSMS to be implemented in lua, as such an implementation would not be able to execute within the sandbox).  
 
-<h1>Lua File Interpretation</h1>
-Lua Source files are to be interpreted as per the Lua 5.2 language (<a href="https://www.lua.org/manual/5.2/">see this reference manual</a>) with some modifications. 
+# Lua File Interpretation #
+Lua Source files are to be interpreted as per the [Lua 5.2 language](http://www.lua.org/manual/5.2/) with some modifications. 
+
+Alternatively, implementations may choose to interpret the file per the [Lua 5.3 Language](http://www.lua.org/manual/5.3/).
 
 The modifications are made to ensure that each source file exists within its own sandbox, independant of other source files.
 
-<h2>Execution Environment</h2>
+## Execution Environment ##
 In PokemonSMS, every lua source file executed by the implemention must execute independently of every other file. That is, all side effects of executing any given source file MUST NOT affect the execution of any other file. This is achieved by isolating the global environment per file, as well as restricting the libraries accessible to these files. 
 
-All members of the global libraries exposed to these files may be shared or per file. However, attempts to assign these members must result in an error. 
+All members of the global libraries exposed to these files may be shared or per file. However, attempts to assign these members, or members of these members must result in an error. 
 
-If by some bug or obsecure feature, a lua source file is able to bypass this restriction in an implementation which conforms to these rules, the behavior of a file which does so is undefined. Implementations are not required to diagnose this issue. 
+If by some bug or obsecure feature of lua (which is not documented here), a lua source file is able to bypass this restriction in an implementation which conforms to these rules, the behavior of a file which does so is undefined. Implementations are not required to diagnose this issue. 
 
-<h2>Lua Standard Libraries</h2>
+Despite Caching the result of require in package.loaded having visible side effects, it is not considered a violation of the spec (as it simply an optimization with both the members of package.loaded and their members (recursively) being unassignable). 
+
+
+
+## Lua Standard Libraries ##
 
 Some libraries, which can have externally visible side effects, are made available by the lua 5.2 language. These libraries, if exposed, would allow source files to break the sandbox enforced by this specification. In order to preserve the execution independence, these libraries MUST NOT be exposed to lua source files. 
 
-The os, io, coroutine, and debug libraries MUST NOT be exposed to source files. 
 
-Additionally some of the global functions MUST NOT be exposed either. These functions are the print function, the error function, 
+The full list of libraries and functions which MUST NOT be exposed is as follows:
+
+* The os, coroutine, io,  

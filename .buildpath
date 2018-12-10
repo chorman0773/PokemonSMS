@@ -2,4 +2,5 @@
 <buildpath>
 	<buildpathentry kind="src" path="lib"/>
 	<buildpathentry kind="src" path="server"/>
+	<buildpathentry kind="src" path="Specifications"/>
 </buildpath>

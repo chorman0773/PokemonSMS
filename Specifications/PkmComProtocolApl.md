@@ -1,6 +1,6 @@
-<h1>Info and Copyright Notice</h1>
+# Info and Copyright Notice #
 
-<h2>Copyright:</h2>
+## Copyright ##
 PokemonSMS Public Specification Project, Copyright 2018 Connor Horman
 Pokemon, the Pokemon Logo, and all Official Pokemon are Copyright Nintendo and Game Freak. This Project is in no way affiliated with Nintendo or Game Freak, and disclaims all relation with the above parties. This project is intended as a Fan Game, or as Parody of Legitimate Pokemon titles, and no Concreate Game produced using this project should be considered legitimate or affiliated to the above companies, unless they provide official consent to the connection. This project, and all games produced using this specification intend no copyright infringement or Intellectual Property theft of any kind.<br/><br/>
 
@@ -24,25 +24,15 @@ You may not, under any circumstances,
   This Document, and this project are distributed with the intention that they will be useful and complete. However this document and this project are provided on an AS-IS basis, without any warranties of Any Kind, including the implied warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. As such, any person using this document for any reason does so at their own risk.  By using this document, you explicitly agree to release The Owner, and any person who might have distributed a copy of this document to you from all liability connected with your use of this document
 <br/><br/>
 
-<h2>Information</h2>
-The PkmCom Abstract Protocol Layout defines how PkmCom structures Packets, how errors in general are checked and handled, as well as the relationship between the Server and the Client, and the Overview of the Initial Connection Handshake. The APL does NOT define the Concrete Packet Definitions, or Specifics about the Concrete protocol definition. (See /Specifications/PkmComProtocolDefinition.md for actual structure detail).
-
-<h2>Notes</h2>
-In this document, Ranges of Valid values are represented using `(]` notation.<br/>
-Specifically, whenever a range is defined, it will start with either a `(` or a `[`, will list 2 values, separated by a comma, and end with either a `)` or a `]`.<br/>
-The lower bound is the first value and is inclusive (includes that value) if the range is defined with `(` (exclusive if its defined with `[`).
-The upper bound is the second value and is inclusive if the range is terminated with `)`. <br/>
-Most ranges will have an inclusive lower bound, and an exclusive upper bound. Ranges in this document will only use inclusive upper bounds if the actual exclusive upper bound cannot be represented as a writeable number. 
-No ranges defined in this document will have an exclusive lower bound.<br/>
-The set which the range is defined over is usually implied by the context. If it cannot, it will be explicitly specified by preceding the range, using Set notation. For example, the range 0-1 over real numbers will be specified as ℝ(0,1], and the range 0-9 (inclusive) over Natural Numbers (or Integers) will be specified as ℤ(0,10].
+## Information ##
+The PkmCom Abstract Protocol Layout defines how PkmCom structures Packets, how errors in general are checked and handled, as well as the relationship between the Server and the Client, and the Overview of the Initial Connection Handshake. The APL does NOT define the Concrete Packet Definitions, or Specifics about the Concrete protocol definition. (See /Specifications/PkmComCompleteDefinition.md for actual structure detail).
 
 
-
-<h1>PkmCom Types</h1>
+# PkmCom Types #
 PkmCom Packets are divided into Types. These types define how many bytes a field takes up (size), how that field is verified (hashcode), and what Preconditions are implied by the field.<br/>
 All Multibyte Data types are read and written in Big-Endain (network) Byte order. (So a short s is written as (s>>8)0xff followed by s&0xff.<br/><br/>
 
-<h2>Type List</h2>
+## Type List ##
 The PkmCom APL defines 21 Types by default. The types are as Such:
 <table>
 	<tr>
@@ -169,7 +159,7 @@ The PkmCom APL defines 21 Types by default. The types are as Such:
 		<td>Instant</td>
 		<td>12</td>
 		<td>Stores an instant in time as Long Seconds since Epoch (January 1st, 1970 at 12:00:00 AM GMT) and Int Nanos of Second.</td>
-		<td>The definition (and formatting) of Instant used is Specified by the Java Time API (A Full Specification of this definition is located at https://docs.oracle.com/javase/10/docs/api/java/time/package-summary.html). Note that Despite Nanosecond Precision being defined, it is not necessary that Instants are computed to Nanosecond Precision, though at least Milisecond Precision is required.</td>
+		<td>The definition (and formatting) of Instant used is Specified by the Java Time API (A Full Specification of this definition is located at <https://docs.oracle.com/javase/10/docs/api/java/time/package-summary.html>). Note that Despite Nanosecond Precision being defined, it is not necessary that Instants are computed to Nanosecond Precision, though at least Milisecond Precision is required.</td>
 	</tr>
 	<tr>
 		<td>Duration</td>
@@ -210,7 +200,7 @@ Any example of a Structure type is as follows:
 <br/>
 In general: The size of a structure type is the total size of its fields, and the hashcode of a structure type is computed from the hashcode of each field. Finally the Preconditions of the structure type include the preconditions of each field, as well as potentially individually defined preconditions.<br/><br/>
 
-<h2>Packet Format</h2>
+## Packet Format ##
 PkmCom uses an Headed Packet Format which stores several fields (listing enough information to identify and validate the packet contents. 
 Packet is itself considered a Structured Type in the PkmCom protocol, though may never be used as such in a packet. 
 The Actual Content of a Packet is also structure type, which is defined by the Id.<br/><br/>
@@ -244,23 +234,22 @@ The structure of a Packet is as follows:
 	</tr>
 </table>
 
-<h2>Packet Verification (Hashcodes)</h2>
+## Packet Verification (Hashcodes) ##
 PkmCom uses a 4-byte Unsigned Hashcode to verify and validate that the content of the packet was received correctly.
 Each type defines it own rules for how this hashcode is computed.<br/>
 
 <h3>hashsum function</h3>
 The hashsum function is the commonly referenced function for computing hashcodes. 
-The hashsum function is defined for n inputs (which are Unsigned Integers) as follows:<br/>
+The hashsum function is defined for n inputs as follows:<br/>
 <ol type="1">
 <li>If n is 0, the hashsum is 0</li>
 <li>If n is 1, the hashsum is the hashcode of the value</li>
 <li>If n is 2, given by a and b, the hashsum is hashcode(a)*31+hashcode(b)</li>
 <li>Otherwise, if the first 2 values are a and b, and the remaining values are given by c..., then the hashsum is hashsum(hashsum(a,b),c...).</li>
-<li>If any given value is
 </ol>
 This function is defined to provide a consistent method of chaining value hashcodes together in a order-sensitive manner.
 
-<h3>Hashcode Definitions</h3>
+### Hashcode Definitions ###
 The hashcode of each type is given as such:
 <ul>
 <li>Byte,Unsigned Short: The hashcode of Byte and Unsigned Short is the value itself, zero-extended to an Unsigned Int</li>
@@ -280,7 +269,7 @@ The hashcode of each type is given as such:
 <li>Packet: The hashcode of a packet is the hashsum of its id and content. Note that neither the size nor hashcode fields are included (otherwise we would have an issue with hashcode field).</li>
 </ul>
 
-<h3>Rules/Preconditions</h3>
+### Rules/Preconditions ###
 Each type in PkmCom may additionally define a set of preconditions, that is, rules about the stored value. If a packet recieved contains any fields with values in violation of these rules, the recieving side MUST generate a Protocol Error<br/>
 The Rules of each type in PkmCom that defines any are as follows:
 <li>T Enum: The value must be one of the values specified in its definition, or an unused value. (No other values of T may be sent).</li>
@@ -293,7 +282,7 @@ If a continuation byte is read, it must have been preceeded by a header byte or 
 <li>Json, Long Json: The Raw representation must meet the Preconditions for String/Long String Respectively. In addition, the text must be a valid Json Object which is enclosed in `{}`.</li>
 </ul>
 
-<h1>Connection Handshaking</h1>
+# Connection Handshaking #
 The PkmCom protocol is built on TCP. When the connection is opened, and after the TCP Handshake, The Server and Client preform a Secret Key exchange to send data over a channel secured by AES-256, using Cipher Block Chaining, and Padded with PKCS5 Padding.<br/>
 The steps of the key exchange are preformed as follows:
 <ol type="1">
@@ -304,7 +293,7 @@ The steps of the key exchange are preformed as follows:
 <li>The Client destroys its Private Key. The Key Pair is not used from this point.</li>
 <li>The Client should then send a Handshaking Packet (0xFF, See below). If its read correctly, then the server should respond with the same packet. If either packet is read incorrectly, the connection is closed (though may be reopened).</li>
 </ol>
-<h2>Handshaking Packet</h2> 
+## Handshaking Packet ##
 This Packet is sent and verified at the end of the handshake sequence. It contains a single Unsigned Int Enum Field, which should be exactly 0x504B4D00. The Id of the Packet is 0xFF.
 
 

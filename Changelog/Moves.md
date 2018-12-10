@@ -26,9 +26,10 @@ Type: Dark -> Item Dependant
 
 Effect:
 
-Fails if the item cannot be lost, or is and "Equipment" type item.
+Fails if the item cannot be lost, or is an "Equipment" type item.
 
-If the user has the Poison Touch ability, and the target would not be affected by another non-volatile status condition as a result of this move, then the target is poisoned as a second effect. 
+If the user has the Poison Touch ability, and the target would not be affected by another non-volatile status condition as a result of this move, then the target is poisoned as a secondary effect. 
+
 
 Default:
 Power: 50
