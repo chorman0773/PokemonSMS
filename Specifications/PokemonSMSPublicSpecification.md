@@ -42,5 +42,3 @@ It also makes it so that there is a uniform base for making similar Pokemon Fan 
 
 
 
-
-

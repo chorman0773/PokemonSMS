@@ -31,6 +31,8 @@ In the present version of this document, references to that specification imply 
 ## Info ##
 Defines the Specification for the File Format used to store PokemonSMS Savegames, The Specific Structure of a Savegame, and Save File Generalization
 # Specification #
+
+
 ## ShadeNBT Format ##
 PokemonSMS stores games in the ShadeNBT format, which extends the NBT File Format defined by Markus Person. 
 Standard Save Files take the following Format:
@@ -41,14 +43,19 @@ struct file{
 	be16 shadeVersion;
 	u8 flags;
 	TAG_Compound compoundTag;
+	u8 trailingZeros[];
 }
 ```
 
 Given the file, magic must be exactly `[0xAD 0x4E 0x42 0x54]` ("\xADNBT"), otherwise the file is Ill-formed.
 shadeVersion is the version of the ShadeNBT specification, in the Sentry Versioning Format. If the version represents one greater then 1.2, the file is Ill-formed.
 flags are the Shade flags. does not exist if shadeVersion specifies any version other then 1.2.
-compoundTag is the actual content of the file. Multibyte datatypes are stored in Big-Endian if the shadeVersion is not 1.2, or if flag 0x80 of the Shade Flags is clear. If The version is 1.2 and flag 0x80 in Shade Flags is set, then Multibyte datatypes are stored in Little-Endian. The `TAG_Compound` refers to the top level Compound tag in an uncompressed NBT File. The file is Ill-formed if the `TAG_Compound` cannot be parsed correctly.
-<br/><br/>
+compoundTag is the actual content of the file. Multibyte datatypes are stored in Big-Endian if the shadeVersion is not 1.2, or if flag 0x80 of the Shade Flags is clear. If The version is 1.2 and flag 0x80 in Shade Flags is set, then Multibyte datatypes are stored in Little-Endian. The `TAG_Compound` refers to the top level Compound tag in an uncompressed NBT File. The file is Ill-formed if the `TAG_Compound` cannot be parsed correctly. 
+
+If There are any bytes in `trailingZeros`, they must all be 0 bytes.
+
+
+### CryptoShade Extension ###
 Implementations of PokemonSMS can also optionally support CryptoShade. The format of a crypto shade file is as follows:
 
 ```
@@ -59,52 +66,255 @@ struct crypto_shade_file{
 	u8 salt[32];
 	u8 iv[16];
 	u16 blockCount;
-	u8 blocks[blockCount][16];
+	u8 blocks[16][blockCount];
 };
 ```
 version and flags are exactly as described for standard ShadeNBT files. magic must be exactly `[0xEC 0x4E 0x42 0x54]` or the file is Ill-formed.
 salt is the random salt for Key Derivation (see below), Iv is the initialization vector for CBC Block Chaining Mode.
 blockCount is the number of 16-byte Blocks that follow. 
-A user supplied password and the randomly generated salt are used to derive an AES-256 key by hashing that password (without a null terminator) with the salt appended using SHA-256.
+A user supplied password and the randomly generated salt are used to derive an AES-256 key by hashing that password (without a null terminator) with the salt appended using SHA-256. 
+
+Note: The Password is not mandated to be user supplied, it may be independently generated or derived. However the password is not stored in the file. 
+Additionally, implementations are not required to support creating unencrypted save files, but are required to support loading and resaving of unencrypted save files. 
+These statements are in place to allow implementations that want to keep users from modifying save files by hiding the cryptographic key source. 
+It is usually not a good idea to store cryptographic details in any application (as it may lead to security issues even for proprietary applications. To quote literally every security researcher "Security through Obscurity is no Security at all"). 
+However, on systems with built-in cryptographic features (such as Gaming Consoles), it may be possible to leverage these built-in features to derive the key. Due to the variety of the cryptographic salt and initialization vector for CBC Chaining using the same "password" or key-base for multiple files or multiple iterations of the same file is not a security concern, provided the security and integrety of the key remains intact. 
+
+
+
 The `TAG_Compound` is encrypted or decrypted using this key in CBC mode with the IV, padded using PKCS5 Padding.
 Same rules for the Decrypted `TAG_Compound` apply as do for ShadeNBT.
-At least one of iv and salt must be regenerated each time the file is saved. Both must have been generated using a Secure Random Number Generator.
+At least one of iv and salt must be regenerated each time the file is saved. Both must have been generated from a Secure Source of Random Bytes. 
 
-<h2>Save file generalization and storage</h2>
-PokemonSMS supports multiple save files. An sqlite database of these save files is stored alongside the actual save files, with the name filename saves.pkmdb. The database contains a single table called Saves
-Each Entry in this Table contains the following fields
+### Structure of NBT Files ###
+
+As per the specification, NBT Files take on a specific structure. This structure provides a uniform way of serializing named binary data in tag form (hense "Named Binary Tag"). 
+
+In NBT Files, the `i8`, `i16`, `i32`, `i64`, `f32` and `f64` tags refer to the primitive types associated specifically with NBT Files. These refer to signed values. `u16` also exists (The Length Prefix of Strings). 
+There length (in bits) is specified by the number after the typecode (i or f). 
+Aside from `i8`, these types are constrained to the Endianess Flag set in the ShadeHeader for Files indicating a ShadeVersion of 1.2 and above. In Save files indicating a ShadeVersion of 1.1 or below, they are all encoded in Big Endian. 
+
+The `f32` and `f64` tags are floating point numbers encoded in the IEEE 754 (IEC 559) Floating-Point Representation as binary32 or binary64 respectively. NaN Values MUST NOT be encoded in these tags (despite the Original NBT Specification permitting NaN values). 
+
+
+
+#### Tag Types ####
+
+<table>
+	<tr>
+		<th>Tag Type</th>
+		<th>Tag Name</th>
+		<th>Size(bytes)</th>
+		<th>Payload</th>
+	</tr>
+	<tr>
+		<td>0</td>
+		<td>TAG_End</td>
+		<td>0</td>
+		<td>Empty</td>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td>TAG_Byte</td>
+		<td>1</td>
+		<td>i8 value</td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>TAG_Short</td>
+		<td>2</td>
+		<td>i16 value</td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>TAG_Int</td>
+		<td>4</td>
+		<td>i32 value</td>
+	</tr>
+	<tr>
+		<td>4</td>
+		<td>TAG_Long</td>
+		<td>8</td>
+		<td>i64 value</td>
+	</tr>
+	<tr>
+		<td>5</td>
+		<td>TAG_Float</td>
+		<td>4</td>
+		<td>f32 value</td>
+	</tr>
+	<tr>
+		<td>6</td>
+		<td>TAG_Double</td>
+		<td>8</td>
+		<td>f64 value</td>
+	</tr>
+	<tr>
+		<td>7</td>
+		<td>TAG_ByteArray</td>
+		<td>Varies</td>
+		<td>i32 length prefix, followed by that many TAG_Bytes</td>
+	</tr>
+	<tr>
+		<td>8</td>
+		<td>TAG_String</td>
+		<td>Varies</td>
+		<td>u16 length prefix, followed by that many u8 values which form a valid UTF-8 String</td>
+	</tr>
+	<tr>
+		<td>9</td>
+		<td>TAG_List</td>
+		<td>Varies</td>
+		<td>i32 length prefix, and a u8 ListTagType, followed by length payloads for the given ListTagType.</td>
+	</tr>
+	<tr>
+		<td>10</td>
+		<td>TAG_Compound</td>
+		<td>Varies</td>
+		<td>See "TAG_Compound" Structure below</td>
+	</tr>
+	<tr>
+		<td>11</td>
+		<td>TAG_IntArray</td>
+		<td>Varies</td>
+		<td>i32 length prefix, followed by that many TAG_Ints</td>
+	</tr>
+	<tr>
+		<td>12</td>
+		<td>TAG_LongArray</td>
+		<td>Varies</td>
+		<td>i32 length prefix, followed by that many TAG_Longs</td>
+	</tr>
+</table>
+
+Other tags may be added in future versions of this Specification. This will be updated to reflect the most current version of the Shade Specification and NBT Specification. 
+
+The Structure of an NBTTag (stored in a compound) is as follows
 
 ```
-TEXT path
-TEXT nameComponent
-TEXT icon
-LONG saveTimeSeconds
-INT saveTimeNanos
-INT pokedexSeen
-INT pokedexCaught
-BOOL encrypted 
+NBTTag{
+	u8 tagType;
+	TAG_String name;
+	union{
+		TAG_Byte byte;
+		TAG_Short short;
+		TAG_Int int;
+		TAG_Long long;
+		TAG_Float float;
+		TAG_Double double;
+		TAG_ByteArray byteArray;
+		TAG_String string;
+		TAG_List list;
+		TAG_Compound compound;
+		TAG_IntArray intArray;
+		TAG_LongArray longArray;
+	}payload;
+}
 ```
-path is a relative pathname to the save file (relative to the directory that saves.pkmdb is in). 
-nameComponent is a Text Component representing the name given to the player in the file. 
-icon is the Image which displays alongside the save file in the save file select menu, as a base64 encoded JPEG file
-saveTimeSeconds is the total seconds the save file has been open for
-saveTimeNanos is the nanosecond component of the Duration the save file has been open for in total.
-pokedexSeen is the number of pokemon that are registered as seen in the pokedex
-pokedexCaught is the number of pokemon that are registered as caught in the pokedex
+
+The `TAG_String` (or any other Type prefixed with `TAG_`) refers to the payload of that tag type. There is No tagType or name for these tags. 
+
+
+
+And the Structure of a TAG_Compound payload is as follows
+
+```
+TAG_Compound{
+	NBTTag tags[];
+	u8 endTagType;
+};
+```
+
+`endTagType` is exactly the Byte 0. 
+
+`tags` is an array of an unknown length. It starts from the first NBTTag in the Compound, and continues until a NBTTag read specifies an End Tag, and does not include that tag. 
+
+The Names of tags in the `TAG_Compound` follow the rules of strings defined below. It is unspecified whether or not these keys are case-sensitive. 
+A Compound tag MAY NOT contain multiple tags with names that differ only in case (In the official specification, this restriction is not in place). A Compound tag MUST NOT contain multiple tags with identical names. 
+
+The first `TAG_Compound` (the one that appears inside the ShadeFile structure's `compoundTag`, or the decrypted `TAG_Compound`) is called the base compound. The base compound does not have a type or a name. 
+
+There may be only one tag contained within the base compound, which must be an unnamed compound tag itself (though both the name and tagType are still encoded). It is not required that the base compound be terminated with an End Tag (though may in fact exist as such). 
+
+#### Strings ####
+
+Strings (TAG_String), encode text in UTF-8 format. 
+The following rules apply to those Strings
+
+* There may be no Embedded Null Bytes 
+* The first byte of a character must either be a single-byte character (in [0x01,0x80)), or a multi-byte character header. 
+* Each byte of a multi-byte character, except the first byte, MUST be a Continuation Byte. A Continuation may not appear in any other position. 
+* If the String ends after a given byte, then it MUST either be a single-byte character, or the final Continuation Byte of a Multi-byte character. If a String ends after a Multi-byte character header, or any continuation byte of a multibyte character, except the last. 
+* Only 2-byte and 3-byte multibyte characters are supported. 4-byte, 5-byte, and 6-byte chracters are not. 
+* If a Character is the first Character of a Surrogate Pair, then the next character must exist and must be a valid second character in the Surrogate Pair. (The String MUST NOT end in the middle of a Surrogate Pair). 
+* If a Character is the second Character of a Surrogate Pair, then the previous character must be a valid character that starts a Surrogate Pair. 
+* If any single character that is not part of a Surrogate Pair does not encode a valid Unicode Character, or any Surrogate Pair does not encode a valid Unicode Character
+
+A file which contains a String tag that contains any text that does
+
+## Save file generalization and storage ##
+PokemonSMS supports multiple save files. A sqlite database of these save files is stored alongside the actual save files, with the name filename saves.pkmdb. The database shall contain a single table called "Saves" that uses the following Schema. 
+
+```sqlite
+CREATE TABLE `Saves` (
+	`id`	INTEGER NOT NULL AUTOINCREMENT UNIQUE,
+	`path`	TEXT NOT NULL,
+	`nameComponent`	TEXT NOT NULL,
+	`icon`	TEXT NOT NULL,
+	`saveTimeSeconds`	INTEGER NOT NULL,
+	`saveTimeNanos`	INTEGER NOT NULL,
+	`encrypted`	BOOL NOT NULL,
+	PRIMARY Key('id')
+);
+```
+
+`id` is the save file number to uniquely identify the file, may be any number, but at most 1 Row may exist with a given `id` (hense `UNIQUE`)
+
+`path` is a relative pathname to the save file (relative to the directory that saves.pkmdb is in). The pathname shall be case-insensitive, use `/` path separators if applicable (posix). It MUST NOT start with `/` or contain any navigation components (such as `..` or `.`). 
+
+`nameComponent` is a Text Component representing the name given to the player in the file. 
+
+`icon` is the Image which displays alongside the save file in the save file select menu, as a base64 encoded JPEG file
+
+`saveTimeSeconds` is the total seconds the save file has been open for
+`saveTimeNanos` is the nanosecond component of the Duration the save file has been open for in total.
+`pokedexSeen` is the number of pokemon that are registered as seen in the pokedex
+`pokedexCaught` is the number of pokemon that are registered as caught in the pokedex
 encrypted is true if the file is using the CryptoShade Extension, false otherwise.
 
 Implementations may store other information in saves.pkmdb, such as global options, in other tables. 
 
-The maximum number of save slots in unspecified, but must at least be 3. 
+The maximum number of save slots an implementation supports is unspecified, but must at least be 3. Implementations must accept save databases which indicate a greater number of save files. 
+
+The Directory which save files are stored in is unspecified, and may not even be a physical directory on a filesystem. Implementations are permitted to store a logical filesystem in an unspecified file that contains 
+
 
 
 ## Save File Structure ##
+
 The NBT Structure of a Save File is broken into chunks, which describe the various portions of the game. Each Portion is detailed below:
+
+### Serializing Lua ###
+Lua Tables (and other values, but not Functions or Userdata) can be serialized. 
+
+Tables must either represent a list (Mapping integer keys starting from 1 to some uniform type of values), or Structures (Mapping String Keys to some values), and may not contain values that cannot be serialized. Tables must also not be nested recursively. 
+
+
+Tables that represent Structures are serialized as `TAG_Compound`, Lists are serialized as `TAG_List`. The elements of tables that can be serialized are serialized as such. 
+
+Numbers are serialized as `TAG_Double` (if they do not meet the requirements for a Lua Integer defined in Lua 5.3 or do not fall in the range for a `TAG_Int`), or `TAG_Int` (if they do). The value `math.huge` serializes as `TAG_Double` which identifies the IEEE 754 Double value "Positive Infinity". The value `-math.huge` serializes as "Negative Infinity". 
+
+Strings are serialized as `TAG_String`. Boolean values are serialized as the `TAG_Byte` containing 1b if they are true, and the `TAG_Byte` containing 0b if they are false. 
+
+It is unspecified which userdata types can be serialized in NBT Form. 
+
+
+
 
 ### Pokemon Structure ###
 Pokemon stored in the Save file take the following format:
 
-* (a pokemon)(compound)
+* (a pokemon)(compound) (tags common to all pokemon)
     * Species (string): The resource location that names the species of the pokemon. If  the string is not a valid resource location (see ResourceNaming.md), the resource location does not name a pokemon, or the string is `system:pokemon/null` the file is ill-formed. Must Exist, or the compound may not contain any other tags. 
     * CatchInfo (compound): The Information describing how the pokemon was obtained
         * TrainerId (long): The Id of the original trainer of this pokemon
@@ -124,5 +334,27 @@ Pokemon stored in the Save file take the following format:
     * Individuality (compound): The Structure which defines the Pokemon Individuality Information
         * BlockId (long): The First of the 2 Pokemon Individuality Ids (Block Identifier). 
         * SlotId (long): The Second of the 2 Pokemon Individuality Ids (Slot Identifier)
+        * PokemonFlags (byte): The flags associated with the Pokemon. See below
+        * CryModifier (compound): The Invididuality Cry Modifiers
+            * Pitch (byte): (Unsigned) The pitch modifier that applies to the pokemon
+            * Volume (byte): (Unsigned) The volume modifier that applies to the pokemon.
+    * Options (compound): A Compound containing implementation specific Information about the Pokemon
+    * Items (compound): The held item and equipment item. Must exist but may be empty
+        * Held (compound): The compound describing the held item. See Item Structure. May not exist or be empty. 
+        * Equipment (compound): The compound describing the equipment (secondary) item. See Item Structure. May not exist.
+    * Extra (compound): The Serialization of the Extra Table. Species Dependent. May not Exist
+    
+### Item Structure ###
+
+Items are Stored in the following structure:
+
+* (an item) (compound)  (Tags common to all items)
+    * Id (string): The resource name that identifies the item. Must be a valid resource location that names an item or the file is ill-formed.
+    * Count (short): The number of items in the stack. May not Exist. If undefined, defaults to 1. If it is defined, it must be the value 1 if the compound appears in a Pokemon's Items compound. 
+    * Variant (short): The Variant Id of the item. May not exist, defaults to 0. The range of valid values and the properties of item variants is depedent on the item. 
+    * Extra (compound): The serialization of the Item's Extra Table. Item Dependent. May Not Exist
+
+
+
 		
 
