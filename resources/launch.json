@@ -1,0 +1,27 @@
+{
+	"game":{
+		"module":"github.chorman0773.pokemonsms",
+		"jar-path":"https://github.com/chorman0773/PokemonSMS-Vanilla-Engine/bin/pokemonsms.jar",
+		"uuid":"f008f340-bff6-11e8-a355-529269fb1459"
+	},
+	"updates":{
+		"version":"1.0",
+		"patch":0,
+		"update-url":"https://github.com/chorman0773/PokemonSMS-Vanilla-Engine/resources/launch.sentry"
+	},
+	"provider":{
+		"name":"Sentry/Lightning Creations",
+		"provider-id":"lightningcreations",
+		"entry-salt":"RYyxPBfBQBa9/a+5yhUNkZ2s1Fjn/37bhcRh115tesU=",
+		"pkey":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlR/C3W9n2mSUniZKPiw0hbZg4N27BdmxnoyWfLlTN280xF2Kz/fc/7PtxhDYRluhK/B4zO7A/EF2jpTqUgtSL+hT4L4ZY8I5QVqWcopMdg60FXuc6jdyKp3XLJWn6MFe0lPQAQ7tGhPMmg/LMRuql6cg3ohqjxbOVFYVPpvQ3hUwtPNSdHC5EOrbrydzPYLPOqNZn+/ylj9UidRyMtvFmL1HFjDO6+JQq5DqlwM1N2Jg0ic448vsJ0H/TSaEvGMI+aoetu3arZ4WyMZW4BvDAY4lqv+mb0p6ufgbXDcfxrkdL5Nr9pH1ZrNLHZsDg+ZO/CdX4tYhmahUOrQ3XuZqAwIDAQAB",
+		"validation":"dPTinqa8BExUA4BYrZxxpbVJFeGl1SjYzMgXvGv4fDiqd5DvL9L1z261RSOK5LsjmkEMR7rIQ5YRnARyI8TwoFQ9F0VGio+JdJDivBbJOCgsMg1DFUW0pRLzPY74lY7n+Jw3XJYKavstteWym0U5y/2TcEwF50aJhnu98bwDSTIyQXaNF+RIiqpnqXMQT+jHoUNpH+txHfB2QtKXZ4A5ZOrIRET8kYzvVA1qz6GZ2DJQ6H6FuxqI/4zr+fIi3Qw2/6pP1TlAG+sH6tc6Mcu8A93tHCfCA5wigvsBn/tIW2LNTzfCp+eZZL0cTPerRa6xUh95ZY8yYLt+hAVjZZKNEA==",
+		"cci-provider":"",
+		"cci-data":""
+	},
+	"session":{
+		"use-sentry":true,
+		"require-account":false,
+		"required-scopes":["auth","game","read:game","write:game","delete:game","stats:game"],
+		"game-scope":"f008f340-bff6-11e8-a355-529269fb1459"
+	}
+}
