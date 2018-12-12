@@ -1,0 +1,12 @@
+{
+	"cci-provider-info":{
+		"cci-provider-type":"cci-signable-provider",
+		"verification-level":"strict",
+		"use-signature":true
+	},
+	"provider-data":{
+		"name":"Sentry/Lightning Creations",
+		"identifier":"lightningcreations",
+		"pkey":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlR/C3W9n2mSUniZKPiw0hbZg4N27BdmxnoyWfLlTN280xF2Kz/fc/7PtxhDYRluhK/B4zO7A/EF2jpTqUgtSL+hT4L4ZY8I5QVqWcopMdg60FXuc6jdyKp3XLJWn6MFe0lPQAQ7tGhPMmg/LMRuql6cg3ohqjxbOVFYVPpvQ3hUwtPNSdHC5EOrbrydzPYLPOqNZn+/ylj9UidRyMtvFmL1HFjDO6+JQq5DqlwM1N2Jg0ic448vsJ0H/TSaEvGMI+aoetu3arZ4WyMZW4BvDAY4lqv+mb0p6ufgbXDcfxrkdL5Nr9pH1ZrNLHZsDg+ZO/CdX4tYhmahUOrQ3XuZqAwIDAQAB"
+	}
+}
