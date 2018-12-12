@@ -19,13 +19,10 @@ local Events = require"Events";
 --@field Constants#Constants Constants
 local Constants = require"Constants";
 
----
---@field Game#Game Game
-local Game = require"Game";
 
 ---
 --@field Game#Utils Utils
-local Utils = Game:getUtils();
+local Utils = require"Utils";
 
 ---
 --@function[parent=#Events] newEventBus()

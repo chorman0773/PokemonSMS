@@ -34,13 +34,13 @@ local Constants = require"Constants";
 
 
 local Targeting = Constants.Battle.Targeting;
-local Type = Constants.Type;
+local Type = Constants.Types;
 ---
 --@field #Stats Stats
-local Stats = Constants.Battle.Stats;
+local Stats = Constants.Stats;
 ---
 --
-local Status = Constants.Battle.Status;
+local Status = Constants.Status;
 local Action = Constants.Battle.Action;
 
 ---
