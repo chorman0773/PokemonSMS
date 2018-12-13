@@ -287,14 +287,20 @@ The PkmCom protocol is built on TCP. When the connection is opened, and after th
 The steps of the key exchange are preformed as follows:
 <ol type="1">
 <li>The Server has a prepared RSA Key Pair (may be RSA-1024 or RSA-2048). The Public Key of this Key Pair is sent to the Client</li>
-<li>The Client generates an RSA Key pair (Either RSA-1024 or RSA-2048), and sends the public key to the server</li>
-<li>The server and the client each generate (in a secure fashion), a 2048-bit message. This message encrypted using the public key of the target side (using  PKCS1 Padding). They both also generate and send a 128-byte iv</li>
+<li>The Client generates an RSA Key pair (Either RSA-1024 or RSA-2048), and sends the public key to the server. This key pair is to be disposed of by the client by the time connection is closed. It may be disposed of earlier, but only after all points which the Complete Protocol Definition applying PkmCom permits the server to re-establish the shared secret</li>
+<li>The server and the client each generate (in a secure fashion), a 2048-bit message. This message encrypted using the public key of the target side (using PKCS1 Padding). They both also generate and send a 128-byte iv</li>
 <li>The 2 messages are Combined by XORing each byte in sequence, and also combine the IVs by the same method. The message is then used to Derive a 256-bit AES Key, using SHA-256. Past this point AES Encryption is used, with the XORed IVs used for Cipher Block Chaining</li>
-<li>The Client destroys its Private Key. The Key Pair is not used from this point.</li>
 <li>The Client should then send a Handshaking Packet (0xFF, See below). If its read correctly, then the server should respond with the same packet. If either packet is read incorrectly, the connection is closed (though may be reopened).</li>
 </ol>
 ## Handshaking Packet ##
 This Packet is sent and verified at the end of the handshake sequence. It contains a single Unsigned Int Enum Field, which should be exactly 0x504B4D00. The Id of the Packet is 0xFF.
+
+## Alternative Handshaking ##
+
+In certain situations, an alternative method is used to derive the Session Shared Secret, such as a password. 
+After the messages are exchanged, if indicated by the server, the client and server should append some sort of alternatively exchanged secret to the combined messages (usually a password exchanged physically, such as in person). The AES Key should then be derived rom that, and handshaking should be completed from that point. 
+
+This is primarily used in LAN (indicated by the 0x80 bit set in the LAN Game type bitfield), but Servers can use this by requesting the secret be re-established with the reason code being set to 1 (password required), and as such, implement non-exclusive whitelists (whitelists that are not associated with one save file, or one sentry account, but are protected by a password). 
 
 
 
