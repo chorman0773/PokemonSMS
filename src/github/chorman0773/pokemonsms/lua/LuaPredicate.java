@@ -14,16 +14,16 @@ public class LuaPredicate extends LuaFunction {
 	public LuaValue invoke(Varargs value) {
 		return predicate.test(value)?TRUE:FALSE;
 	}
-	public LuaPredicate of(Predicate<Varargs> predicate) {
+	public static LuaPredicate of(Predicate<Varargs> predicate) {
 		return new LuaPredicate(predicate);
 	}
-	public LuaPredicate forValuePredicate(Predicate<LuaValue> predicate) {
+	public static LuaPredicate forValuePredicate(Predicate<LuaValue> predicate) {
 		return new LuaPredicate(v->predicate.test(v.arg1()));
 	}
-	public LuaPredicate alwaysTrue() {
+	public static LuaPredicate alwaysTrue() {
 		return new LuaPredicate(v->true);
 	}
-	public LuaPredicate alwaysFalse() {
+	public static LuaPredicate alwaysFalse() {
 		return new LuaPredicate(v->false);
 	}
 }

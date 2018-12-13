@@ -43,12 +43,12 @@ public interface LuaHelpers {
 			@Override
 			public boolean hasNext() {
 				// TODO Auto-generated method stub
-				return pairs.isnil(0);
+				return pairs.isnil(1);
 			}
 
 			@Override
 			public Varargs next() {
-				if(pairs.isnil(0))
+				if(pairs.isnil(1))
 					throw new NoSuchElementException();
 				Varargs ret = pairs;
 				pairs = val.next(ret.arg1());
