@@ -45,7 +45,15 @@ public class GameBinding extends Binding {
 				IS_REGISTERED = 26,
 				GENERATE_PROLOUGE_SPRITE = 27,
 				SET_GRAPHICS_MODE = 28,
-				DRAW = 29;
+				DRAW = 29,
+				REGISTER_POKEMON = 30,
+				REGISTER_ABILITY = 31,
+				REGISTER_ITEM = 32,
+				REGISTER_MOVE = 33,
+				REGISTER_TILE = 34,
+				REGISTER_TRAINER = 35,
+				REGISTER_SPRITE = 36,
+				REGISTER_LOCATION = 37;
 		private GameBindingFunction(int fn) {
 			this.fn = fn;
 		}

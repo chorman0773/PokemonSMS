@@ -35,6 +35,7 @@ public abstract class Battle implements Delegable<Battle> {
 	protected void handle(int key,Object[] parameters) {
 		
 	}
+	
 	protected final Side[] sides;
 	protected final BattleSlot[] slots;
 	private WeatherCondition weather;
