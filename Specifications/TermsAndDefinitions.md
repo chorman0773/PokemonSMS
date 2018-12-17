@@ -77,6 +77,7 @@ Implementations are allowed to handle a violation which results in Undefined beh
 * Ceasing operation entirely
 * Entering some sort of unspecified recovery mode
 * Taking the action, despite the violation, which may result in a meaningful or meaningless change in state
+* Taking any other meaningful or meaningless action (defined below)
 * Performing No operation
 * or Performing some action in response to the violating action which may or may not be correct (this permits implementations to "allow" comparing constants of unrelated types as well as to define the constants from ScriptHooks.md as Numbers)
 
@@ -90,14 +91,52 @@ Actions which are an Effective No-op are ones that do not affect the visible sta
 * Writing to some file, except a game save file or `saves.pkmdb`
 * Writing to a table in the `saves.pkmdb`, except the Global Save Table
 * Writing to the console
+* Writing to some unspecified output area, except any Graphics Layer
 * Reading some variable used by this specification.
 * Reading or Writing an internal implementation variable that does not affect gameplay
 * Prefetching and Caching any Resource in the Core
 * Discarding a Cached Resource in the Core which is not actively in use
-* While Connected to a Server, sending a 0x05 Keep Alive (serverbound) to the server is an effective no-op
-* While running or acting as a server, sending a 0x85 Keep Alive (clientbound) to the client is an effective no-op
+* While Connected to a Server, sending a 0x06 Keep Alive (serverbound) to the server is an effective no-op
+* While running or acting as a server, sending a 0x05 Keep Alive (clientbound) to any connected client is an effective no-op
 * Redrawing any Graphics Layer
 * Refreshing sprites without updating them
+* While Connected to a Server, and running in battle mode, sending a 0x21 Refresh State (Battle) is an effective no-op.
+* While Connected to a Server, and running in trade mode, sending a 0x61 Refresh State (Trade) is an effective no-op 
+* Prefetching any Lua library into the packages.loaded table for the use of require, including libraries defined by this specification, libraries defined by outside lua script files, or defined by the implementation. 
 
 
+## Meaningful Action ##
 
+A meaningful action is an action permitted by this specification to be taken in the active context. It may either be an action specific to the context defined by this specification as Required, Optional, Implementation-Defined, or Unspecified, or an effective no-op (as above). 
+
+In particular, a meaningful action may not be any of the following, unless the current context permits or requires that action to be taken (such an action taken in a context that does not permit or require the action is known as a meaningless action): 
+* Changing the value of some variable used by this specification
+* Undefining any Binding Function or variable defined by the specification
+* Connecting to a Server or sending a packet to a connected server or client, except a 0x05 Keep Alive (Clientbound), 0x06 Keep Alive (Serverbound), 0x21 Refresh State (Battle), 0x61 Refresh State (Trade) 
+* Drawing to the Graphics Layer (but redrawing is fine)
+* Starting any battle mode
+* Ending any battle mode
+* Adding an entry to any reserved domain, except the internal and impl domains, or if the entry name is a reserved name. 
+* Removing an entry registered in any domain, except the internal and impl domains, or if the entry name is a reserved name. 
+
+## Meaningless Action ##
+
+A Meaningless action is one that is not permitted by this specification in the active context. It is any action taken that is neither considered an effective no-op nor defined by this specification in the context as Required, Optional, Implementation-Defined, or Unspecified. 
+
+Such an action MUST NOT be taken by implementations, except in situtations where the core libraries or an extension takes an action that results in undefined behavior. 
+
+## Implementation-Defined Behavior ##
+
+Behavior which is not constrained (or are loosely constrained) by the specification, but may not be a meaningless action. Implementations are required to act deterministically and consistently, and clearly document the results of implementation-defined behavior. 
+
+## Unspecified Behavior ##
+
+Similar to Implementation-Defined Behavior however implementations are not required to document the results of unspecified behavior.  
+
+## Implementation Specific Behavior ##
+
+The Superset of Implementation-Defined Behavior and Unspecified Behavior. 
+
+## This Specification ##
+
+The PokemonSMS Public Specification or some part thereof. 

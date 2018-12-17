@@ -30,7 +30,7 @@ This document defines how Entry names for the Various Entries are formed, as wel
 ## Basic Overview ##
 PokemonSMS uses a 2-part Resource Naming System to identify Entries into the Registries. The system is used to prevent entry clashes between differing versions, differing Core Libraries, and between Custom Injected Libraries (Modifications). 
 Each name is made up of 2 parts, the Domain, and the path. The actual name of the resource with domain "foo" and path "bar" is foo:bar. 
-The Domain must be a valid Java Unqualified Identifier in the Ascii Charset (That is, it just start with a latin letter or an underscore, and each other character in the name must be a latin letter, a latin number, or an underscore). 
+The Domain must be a valid Java Unqualified Identifier in the Ascii Charset (That is, it just start with a latin letter or an underscore, and each other character in the name must be a latin letter, a latin digit, or an underscore). The exception is that domains (and components) MUST NOT contain only underscores and digits. 
 The path is made up of 1 or more components, separated with a /. Each component must also be a valid Java Unqualified Identifier. 
 
 Note that not all valid java unqualified identifiers are valid components of a resource location. Any resource name which has a domain or any path component that solely consists of underscores is an invalid name. 

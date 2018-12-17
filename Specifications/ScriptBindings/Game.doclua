@@ -8,10 +8,11 @@
 --No Restrictions are imposed by this specification as to any values associated with the Pokemon
 --
 --Note:
---This function may only be called during the Prolouge Sequence (defined in /lib/lua/client/Prolouge).
+--This function may only be called during the Prolouge Sequence (defined in /lib/lua/client/Prolouge.lua).
 --The behavior of this function outside of this sequence is indeterminate.
 --In particular, implementations may choose to take the action, ignore the action and return nil,
 --generate an error, or undefine this function entirely.  
+--Specifically the behavior is undefined, except that implementations are not allowed to take a Meaningless Action (TermsAndDefitions#Meaningless Actions)
 --@param #string species A Resource Location which names the species of pokemon to generate
 --@return Types#Pokemon the Pokemon that was generated
 --@return #nil if species is not a valid resource location, or does not name a pokemon

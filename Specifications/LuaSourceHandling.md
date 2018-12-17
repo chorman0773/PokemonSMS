@@ -33,7 +33,7 @@ This file references the lua files defined by the PokemonSMS Core Libraries, and
 # Lua File Interpretation #
 Lua Source files are to be interpreted as per the [Lua 5.2 language](http://www.lua.org/manual/5.2/) with some modifications. 
 
-Alternatively, implementations may choose to interpret the file per the [Lua 5.3 Language](http://www.lua.org/manual/5.3/).
+Alternatively, implementations may choose to interpret the file per the [Lua 5.3 Language](http://www.lua.org/manual/5.3/) with the same modifications (however the bit32 library MUST still be exposed as below).
 
 The modifications are made to ensure that each source file exists within its own sandbox, independant of other source files.
 
@@ -44,7 +44,7 @@ All members of the global libraries exposed to these files may be shared or per 
 
 If by some bug or obsecure feature of lua (which is not documented here), a lua source file is able to bypass this restriction in an implementation which conforms to these rules, the behavior of a file which does so is undefined. Implementations are not required to diagnose this issue. 
 
-Despite Caching the result of require in package.loaded having visible side effects, it is not considered a violation of the spec (as it simply an optimization with both the members of package.loaded and their members (recursively) being unassignable). 
+Despite Caching the result of require in package.loaded having visible side effects, it is not considered a violation of this specification (as it simply an optimization with both the members of package.loaded and their members (recursively) being unassignable). 
 
 
 
