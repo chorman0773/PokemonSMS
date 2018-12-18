@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="src" path="Specification"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/LCLib Java">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -22,13 +23,14 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/chorm/PokemonSMS Runtime/luaj-3.0.1/lib/luaj.jar" sourcepath="C:/Users/chorm/PokemonSMS Runtime/luaj-3.0.1/lib/luaj-sources-3.0.1.jar">
+	<classpathentry kind="lib" path="sqlite.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/chorm/PokemonSMS Runtime/sqlite.jar">
+	<classpathentry kind="lib" path="luaj-3.0.1/lib/luaj.jar" sourcepath="luaj-3.0.1/lib/luaj-sources-3.0.1.jar">
 		<attributes>
+			<attribute name="javadoc_location" value="file:/home/connor/Rem/Users/chorm/PokemonSMS%20Runtime/luaj-3.0.1/docs/api/"/>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
