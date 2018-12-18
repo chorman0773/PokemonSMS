@@ -1,5 +1,6 @@
 ---
 -- @module Game 
+-- [bind.client.game]
 -- A Client Side Only library which can perform various miscilanious actions.
 
 ---
@@ -16,20 +17,26 @@
 --@param #string species A Resource Location which names the species of pokemon to generate
 --@return Types#Pokemon the Pokemon that was generated
 --@return #nil if species is not a valid resource location, or does not name a pokemon
+--
+--[bind.client.game.genProlougePkm]
 
 ---
 --@function[parent=#Game] createItemStack(item,count,extra)
 --Creates an item stack containing count of item, with the given extra tag
 --@param #string item A resource location that names the item to give
 --@param #number count the number of items to generate
---@param #table extra the extra information to associate with the item
+--@param #string subitem the subitem. (Optional)
+--@param #table extra the extra information to associate with the item. May be nil
 --@return Types#ItemStack the item stack generated
+--
+--[bind.client.game.createItemStack]
 
 ---
 --@function[parent=#Game] getPlayer()
 --Returns the player for the game, or nil if the game is in the Gamemode "NONE".
 --@return Types#Player the player currently in use
-
+--
+--[bind.client.game.getPlayer]
 
 
 return nil

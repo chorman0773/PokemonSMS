@@ -1,11 +1,10 @@
 # Info and Copyright Notice #
-
 ## Copyright ##
 PokemonSMS Public Specification Project, Copyright 2018 Connor Horman
 Pokemon, the Pokemon Logo, and all Official Pokemon are Copyright Nintendo and Game Freak. This Project is in no way affiliated with Nintendo or Game Freak, and disclaims all relation with the above parties. This project is intended as a Fan Game, or as Parody of Legitimate Pokemon titles, and no Concreate Game produced using this project should be considered legitimate or affiliated to the above companies, unless they provide official consent to the connection. This project, and all games produced using this specification intend no copyright infringement or Intellectual Property theft of any kind.<br/><br/>
 
 
-The PokemonSMS Public Specification("This Document"), provided by the PokemonSMS Public Specification Project ("This Project"), is Copyright Connor Horman("The Owner"), 2018. 
+The PokemonSMS Battle Event Handling Specification("This Document"), provided by the PokemonSMS Public Specification Project ("This Project"), is Copyright Connor Horman("The Owner"), 2018. 
 Using the license specified by the project, you may, with only the restrictions detailed below,
 (a)Use this document to produce a complete or partial implementation of PokemonSMS, 
 (b)Use this document as reference material to create other related projects or derivative works,
@@ -25,19 +24,38 @@ You may not, under any circumstances,
 <br/><br/>
 
 ## Information ##
-This is the main document of the PokemonSMS Specification, provided by the PokemonSMS Public Specification Project. This defines the minimum requirements of clients and servers, as well as linking to various subdocuments which contain the specifications of each component. 
-It is not required that this be distributed with a PokemonSMS Implementation. 
-However, it is recommended that Implementations document the supported components, and link to the relevant documents in this specification. 
 
-# Complete Specification #
+This document defines the list of item entries added by Core Libraries to the `pokemon` reserved domain. 
 
-This, and all subdocuments define the many components of a PokemonSMS Implementation, and requirements for and restrictions as to how they are provided. 
-PokemonSMS Implementations built using this specification should work identically to other implementions, for the provided components. 
+# Item Entries for Pokemon Domain # 
 
-The goal of this specification is to define a uniform definition for PokemonSMS Implementations, so that the Core may work independently from the Implementation.  
-It also makes it so that there is a uniform base for making similar Pokemon Fan Games, which theoretically could run on any Implementation. 
+## Potion ##
+
+ResourceId: `pokemon:potion`
+
+Name Translation Key: `items.pokemon.potion.{subitem}.name`
+
+Description Translation Key: `items.pokemon.potion.{subitem}.name`
+
+Type: Consumable Item (non-held)
+
+Pocket: `heal` 
+
+### Generic Description ###
+
+Heals the pokemon it is used on by a specific ammount. Cannot be used on a pokemon that is fainted or has its maximum hp, except that subitem 4 can be used on a pokemon that has its maximum hp if it is affected by an NVStatus or is Confused (in-battle only). 
+
+### Restrictions ###
+
+Can apply to all pokemon, except under the conditions described above. Can be used as an in-battle consumable in a battle `b` when `b:canGainExperience()` is true. 
 
 
+### Subitems ###
 
+1. regular, heals 20 HP 
+2. super, heals 60 HP
+3. hyper, heals 120 HP
+4. max, heals the target to `p:getMaximumHP()`
+5. full, heals the target to `p:getMaximumHP()` and applies `p:cure()`. In battle, applies `p:setConfusionTimer(0)`. 
 
 

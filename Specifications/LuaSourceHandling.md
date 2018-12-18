@@ -30,14 +30,16 @@ This document defines how implementations are to handle lua standard libraries a
 ## Note ##
 This file references the lua files defined by the PokemonSMS Core Libraries, and by extension libraries as "Lua Source Files" or "source files". Restrictions defined by this part of the specification ONLY apply to these such files and are not required to be honored for any implementation provided lua files (this makes it possible for PokemonSMS to be implemented in lua, as such an implementation would not be able to execute within the sandbox).  
 
-# Lua File Interpretation #
+# Lua File Interpretation [lua] #
+
+## Lua Interpret Version [lua.ver] ##
 Lua Source files are to be interpreted as per the [Lua 5.2 language](http://www.lua.org/manual/5.2/) with some modifications. 
 
-Alternatively, implementations may choose to interpret the file per the [Lua 5.3 Language](http://www.lua.org/manual/5.3/) with the same modifications (however the bit32 library MUST still be exposed as below).
+Alternatively, implementations may choose to interpret the file per the [Lua 5.3 Language](http://www.lua.org/manual/5.3/) with the same modifications (however the bit32 library MUST still be exposed as below). It is implementation defined if this is the case. 
 
 The modifications are made to ensure that each source file exists within its own sandbox, independant of other source files.
 
-## Execution Environment ##
+## Execution Environment [lua.exec] ##
 In PokemonSMS, every lua source file executed by the implemention must execute independently of every other file. That is, all side effects of executing any given source file MUST NOT affect the execution of any other file. This is achieved by isolating the global environment per file, as well as restricting the libraries accessible to these files. 
 
 All members of the global libraries exposed to these files may be shared or per file. However, attempts to assign these members, or members of these members must result in an error. 
@@ -48,11 +50,11 @@ Despite Caching the result of require in package.loaded having visible side effe
 
 
 
-## Lua Standard Libraries ##
+## Lua Standard Libraries [lua.lib] ##
 
 Some libraries, which can have externally visible side effects, are made available by the lua 5.2 language. These libraries, if exposed, would allow source files to break the sandbox enforced by this specification. In order to preserve the execution independence, these libraries MUST NOT be exposed to lua source files. 
 
 
 The full list of libraries and functions which MUST NOT be exposed is as follows:
 
-* The os, coroutine, io,  
+* The os, coroutine, io 

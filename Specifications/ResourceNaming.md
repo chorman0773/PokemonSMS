@@ -27,6 +27,9 @@ You may not, under any circumstances,
 This document defines how Entry names for the Various Entries are formed, as well as limitations on naming. 
 <br/><br/>
 # Resource Naming #
+
+Section `[res]`
+
 ## Basic Overview ##
 PokemonSMS uses a 2-part Resource Naming System to identify Entries into the Registries. The system is used to prevent entry clashes between differing versions, differing Core Libraries, and between Custom Injected Libraries (Modifications). 
 Each name is made up of 2 parts, the Domain, and the path. The actual name of the resource with domain "foo" and path "bar" is foo:bar. 

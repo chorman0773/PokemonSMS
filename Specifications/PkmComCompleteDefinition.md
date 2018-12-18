@@ -27,7 +27,7 @@ You may not, under any circumstances,
 ## Information ##
 The PkmCom Concrete Protocol Definition defines how the established Client<->Server connection is used to send information and requests, and how that data is verified. 
 
-# PkmCom Complete/Concrete Definition #
+# PkmCom Complete/Concrete Definition [pkmcom.cmpl] #
 
 ## Notes ##
 
@@ -35,12 +35,12 @@ This Concrete Defintion relies on the PkmCom APL defined by PkmComProtocolApl.
 This document will assume knowledge of the APL. 
 Packets are structured as defined in that document. 
 
-## Post-Handshaking ##
+## Post-Handshaking [pkmcom.cmpl.posthandshake] ##
 These packets are exchanged by the server after the handshake is completed, and the shared secret is established. 
 
 If a Protocol error occurs within a Serverbound Post-Handshaking, the response is a 0x02 Connect Failure. If a protocol error occurs within a Clientbound Post-Handshaking Packet, the connection is to be closed (but may be re-established). 
 
-### 0x00 Connect Request ###
+### 0x00 Connect Request [pkmcom.cmpl.posthandshake.connect] ###
 
 Serverbound
 
@@ -70,18 +70,23 @@ Sends Trainer Data, optional Sentry Account Data, and optional implementation cc
 	</tr>
 </table>
 
-#### Rules ####
+#### Sentry Account [pkmcom.cmpl.posthandshake.connect.acc] ####
+
 If the server supports Sentry Accounts, and SentryAccount is not the NIL UUID, the server must query the sentry account server to obtain a Challenge Key, then send a 0x03 Challenge Identity Packet. The request must be made for the Sentry PokemonSMS Game (gameid: f008f340-bff6-11e8-a355-529269fb1459).
 If the Challenge fails, or is not responded to in a timely manner (2 seconds), than a 0x02 Connection Failed packet must be sent in response, and the connection closed. (See Sentry Webserver API, Challenging Identity).
 Additionally, if the SentryAccount is not the NIL UUID, the SentryAccount MUST NOT be already connected to the server. 
 
 
+#### Version [pkmcom.cmpl.posthandshake.connect.ver] ####
 The PkmCom Version MUST be at most the present version of the specification, and MUST be supported by the Server. 
-Servers may implement an arbitrary version of this specification which is at most the present version, and at least that version's origin. Implementations are required to implement an arbitrary version of this specification, which is at most the present version, at at least the origin of that version. Server Implementations are also required to support all versions that released prior to that version of the specification and that have the same origin. Client Implementations are not required to support more than one version of this specification. The origin of a version is the version which has the same major component and a minor component of 0. 
+Servers may implement an arbitrary version of this specification which is at most the present version, and at least that version's origin. Implementations are required to implement an arbitrary version of this specification, which is at most the present version, at at least the origin of that version. Server 
+Implementations are also required to support all versions that released prior to that version of the specification and that have the same origin. 
+Client Implementations are not required to support more than one version of this specification. 
+The origin of a version is the version which has the same major component and a minor component of 0. 
+It is implementation defined which version(s) the client supports and will attempt to connect with and the version(s) supported by the server
 
 
-
-### 0x01 Connect Success ###
+### 0x01 Connect Success [pkmcom.cmpl.posthandshake.connsuccess] ###
 
 Clientbound 
 
@@ -105,7 +110,7 @@ Sent to indicate that the Connection to the server was established successfully,
 	</tr>
 </table>
 
-Available Actions Bitfield:
+#### Available Actions Bitfield [pkmcom.cmpl.posthandshake.connsuccess.acts] ####
 
 <table>
 	<tr>
@@ -136,7 +141,7 @@ Available Actions Bitfield:
 </table>
 
 
-### 0x02 Connect Failure ###
+### 0x02 Connect Failure [pkmcom.cmpl.posthandshake.connfail] ###
 
 Clientbound
 		
@@ -165,7 +170,7 @@ Sent by the server when the server refuses the connection to the client for some
 	</tr>
 </table>
 
-### 0x03 Challenge Identity ###
+### 0x03 Challenge Identity [pkmcom.cmpl.posthandshake.challengereq] ###
 
 Clientbound
 
@@ -184,7 +189,7 @@ Sent by servers that support sentry accounts when a client attempts to connect u
 	</tr>
 </table>
 
-### 0x04 Challenge Response ###
+### 0x04 Challenge Response [pkmcom.cmpl.posthandshake.challengerep] ###
 
 Serverbound
 
@@ -208,7 +213,7 @@ Sent in response to a 0x03 Challenge Identity request.
 	</tr>
 </table>
 
-#### Rules ####
+#### Verification [pkmcom.cmpl.posthandshake.challengerep.verify] ####
 
 The Session Key shall be checked against sentry to recieve the scopes associated with it. 
 
@@ -217,7 +222,7 @@ The Session Key must indicate general, game:f008f340-bff6-11e8-a355-529269fb1459
 Otherwise, Authorization must be the hash signature of the Authority Request, signed with the Associated private key for the given session key. 
 
 
-### 0x05 Re-establish Secret ###
+### 0x05 Re-establish Secret [pkmcom.cmpl.posthandshake.rehandshake] ###
 
 Clientbound
 
@@ -240,7 +245,7 @@ After handshaking completes, the server then establishes the connection.
 	</tr>
 </table>
 
-The Reason Codes are as follows: 
+#### Reason Codes [pkmcom.cmpl.posthandshake.rehandshake.reason] ####
 
 <table>
 	<tr>
@@ -261,9 +266,11 @@ The Reason Codes are as follows:
 	</tr>
 </table>
 
-## General Packets ##
+It is Implementation Defined if re-establishing the secret is supported by a client and it is unspecified what reason codes are supported. It is implementation defined if a server will request an alternative handshake in this manner. 
 
-### 0x06 Keep Alive (Clientbound) ###
+## General Packets [pkmcom.cmpl.general] ##
+
+### 0x06 Keep Alive (Clientbound) [pkmcom.cmpl.gener.keepalive.client] ###
 
 Clientbound
 
@@ -303,7 +310,7 @@ This allows clients to determine server-to-client latency, as well as state inco
 	</tr>
 </table>
 
-### 0x07 Keep Alive (Serverbound) ###
+### 0x07 Keep Alive (Serverbound) [pkmcom.cmpl.general.keepalive.server] ###
 
 Sent by the client in response to Clientbound Keep Alive packets. The pair of packets form the keep alive cycle. 
 This has acts effectively the same effect as the Clientbound Keep Alive packet, but on the server. 
@@ -343,3 +350,19 @@ The state of client and the server are resynced in a specific way.
 	</tr>
 </table>
 
+## IRC Packets [pkmcom.cmpl.irc] ##
+
+
+### IRC Channel Format [pkmcom.cmpl.irc.channel] ###
+
+Various IRC Channels are available on the PkmCom Servers that support IRC. These channels take various forms depending on there type:
+
+All Channels start with a group prefix, then end an identifier component.
+
+
+
+### 0x10 IRC Channel List [pkmcom.cmpl.irc.channels] ###
+
+Clientbound
+
+Sent to set the list of IRC Channels available in general on the  

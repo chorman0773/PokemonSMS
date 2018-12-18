@@ -30,10 +30,13 @@ In the present version of this document, references to that specification imply 
 
 ## Info ##
 Defines the Specification for the File Format used to store PokemonSMS Savegames, The Specific Structure of a Savegame, and Save File Generalization
-# Specification #
+# Specification [save] #
 
 
-## ShadeNBT Format ##
+## ShadeNBT Format [save.shade] ##
+
+
+
 PokemonSMS stores games in the ShadeNBT format, which extends the NBT File Format defined by Markus Person. 
 Standard Save Files take the following Format:
 
@@ -55,7 +58,10 @@ compoundTag is the actual content of the file. Multibyte datatypes are stored in
 If There are any bytes in `trailingZeros`, they must all be 0 bytes.
 
 
-### CryptoShade Extension ###
+### CryptoShade Extension [saves.crypto] ###
+
+
+
 Implementations of PokemonSMS can also optionally support CryptoShade. The format of a crypto shade file is as follows:
 
 ```
@@ -74,19 +80,23 @@ salt is the random salt for Key Derivation (see below), Iv is the initialization
 blockCount is the number of 16-byte Blocks that follow. 
 A user supplied password and the randomly generated salt are used to derive an AES-256 key by hashing that password (without a null terminator) with the salt appended using SHA-256. 
 
+#### Notes about CryptoShade [save.crypt.extensions]
+
 Note: The Password is not mandated to be user supplied, it may be independently generated or derived. However the password is not stored in the file. 
 Additionally, implementations are not required to support creating unencrypted save files, but are required to support loading and resaving of unencrypted save files. 
 These statements are in place to allow implementations that want to keep users from modifying save files by hiding the cryptographic key source. 
 It is usually not a good idea to store cryptographic details in any application (as it may lead to security issues even for proprietary applications. To quote literally every security researcher "Security through Obscurity is no Security at all"). 
 However, on systems with built-in cryptographic features (such as Gaming Consoles), it may be possible to leverage these built-in features to derive the key. Due to the variety of the cryptographic salt and initialization vector for CBC Chaining using the same "password" or key-base for multiple files or multiple iterations of the same file is not a security concern, provided the security and integrety of the key remains intact. 
 
-
+#### Encryption/Decryption of the file [save.crypt.enc]
 
 The `TAG_Compound` is encrypted or decrypted using this key in CBC mode with the IV, padded using PKCS5 Padding.
 Same rules for the Decrypted `TAG_Compound` apply as do for ShadeNBT.
-At least one of iv and salt must be regenerated each time the file is saved. Both must have been generated from a Secure Source of Random Bytes. 
+At least one of iv and salt must be regenerated each time the file is saved. Both must have been generated from a Secure Source of Random Bytes. It is unspecified which of these is regenerated or if both are regenerated. 
 
-### Structure of NBT Files ###
+### Structure of NBT Files [save.shade.struct] ###
+
+
 
 As per the specification, NBT Files take on a specific structure. This structure provides a uniform way of serializing named binary data in tag form (hense "Named Binary Tag"). 
 
@@ -98,7 +108,8 @@ The `f32` and `f64` tags are floating point numbers encoded in the IEEE 754 (IEC
 
 
 
-#### Tag Types ####
+#### Tag Types [save.shade.struct.tags] ####
+
 
 <table>
 	<tr>
@@ -189,6 +200,8 @@ The `f32` and `f64` tags are floating point numbers encoded in the IEEE 754 (IEC
 
 Other tags may be added in future versions of this Specification. This will be updated to reflect the most current version of the Shade Specification and NBT Specification. 
 
+#### NBT Tag Structure [save.shade.struct.tag] ####
+
 The Structure of an NBTTag (stored in a compound) is as follows
 
 ```
@@ -236,7 +249,7 @@ The first `TAG_Compound` (the one that appears inside the ShadeFile structure's 
 
 There may be only one tag contained within the base compound, which must be an unnamed compound tag itself (though both the name and tagType are still encoded). It is not required that the base compound be terminated with an End Tag (though may in fact exist as such). 
 
-#### Strings ####
+#### Strings [save.shade.struct.string] ####
 
 Strings (TAG_String), encode text in UTF-8 format. 
 The following rules apply to those Strings
@@ -252,7 +265,7 @@ The following rules apply to those Strings
 
 A file which contains a String tag that contains any text that does
 
-## Save file generalization and storage ##
+## Save file generalization and storage [save.generic] ##
 PokemonSMS supports multiple save files. A sqlite database of these save files is stored alongside the actual save files, with the name filename saves.pkmdb. The database shall contain a single table called "Saves" that uses the following Schema. 
 
 ```sqlite
@@ -282,19 +295,25 @@ CREATE TABLE `Saves` (
 `pokedexCaught` is the number of pokemon that are registered as caught in the pokedex
 encrypted is true if the file is using the CryptoShade Extension, false otherwise.
 
-Implementations may store other information in saves.pkmdb, such as global options, in other tables. 
+### Implementation Stored Information [save.generic.impl] ###
 
-The maximum number of save slots an implementation supports is unspecified, but must at least be 3. Implementations must accept save databases which indicate a greater number of save files. 
+Implementations may store other information in saves.pkmdb, such as global options, in other tables. What information is stored and if information is stored is implementation-defined. 
+
+### Maximum Save Slots [save.generic.maxslots] ###
+
+The maximum number of save slots an implementation supports is implementation defined, but must at least be 3. Implementations must accept save databases which indicate a greater number of save files. 
+
+### Save File Location [save.generic.loc] ###
 
 The Directory which save files are stored in is unspecified, and may not even be a physical directory on a filesystem. Implementations are permitted to store a logical filesystem in an unspecified file that contains 
 
 
 
-## Save File Structure ##
+## Save File Structure [save.struct] ##
 
 The NBT Structure of a Save File is broken into chunks, which describe the various portions of the game. Each Portion is detailed below:
 
-### Serializing Lua ###
+### Serializing Lua [save.struct.lua] ###
 Lua Tables (and other values, but not Functions or Userdata) can be serialized. 
 
 Tables must either represent a list (Mapping integer keys starting from 1 to some uniform type of values), or Structures (Mapping String Keys to some values), and may not contain values that cannot be serialized. Tables must also not be nested recursively. 
@@ -311,7 +330,7 @@ It is unspecified which userdata types can be serialized in NBT Form.
 
 
 
-### Pokemon Structure ###
+### Pokemon Structure [save.struct.pokemon] ###
 Pokemon stored in the Save file take the following format:
 
 * (a pokemon)(compound) (tags common to all pokemon)
@@ -343,15 +362,21 @@ Pokemon stored in the Save file take the following format:
         * Held (compound): The compound describing the held item. See Item Structure. May not exist or be empty. 
         * Equipment (compound): The compound describing the equipment (secondary) item. See Item Structure. May not exist.
     * Extra (compound): The Serialization of the Extra Table. Species Dependent. May not Exist
+    * Moves (list): Specifies the moves the pokemon knows. May have at most 4 tags
+        * (a move) (compound):
+            * Move (string): The name of the move. Must be a valid resource location that names a move or the file is ill-formed. If this names `system:moves/null`, then no other tags may be defined, and subsequent moves are required to either not exist or have its Move field be `system:moves/null`. 
+            * RemainingPP (byte): The PP the move has remaining. 
+            * NumPPUps (byte): The number of PP Ups used on the move. May be at most 3 or the file is ill-formed. May not exist
+    * Ability (string): The name of the ability of the pokemon. Must be a valid resource location that names an ability. If the Pokemon cannot have the ability specified, the result is unspecified. 
     
-### Item Structure ###
+### Item Structure [save.struct.item] ###
 
 Items are Stored in the following structure:
 
 * (an item) (compound)  (Tags common to all items)
     * Id (string): The resource name that identifies the item. Must be a valid resource location that names an item or the file is ill-formed.
     * Count (short): The number of items in the stack. May not Exist. If undefined, defaults to 1. If it is defined, it must be the value 1 if the compound appears in a Pokemon's Items compound. 
-    * Variant (short): The Variant Id of the item. May not exist, defaults to 0. The range of valid values and the properties of item variants is depedent on the item. 
+    * Variant (string): The Variant Id of the item. May not exist, defaults to 0. The range of valid values and the properties of item variants is depedent on the item. 
     * Extra (compound): The serialization of the Item's Extra Table. Item Dependent. May Not Exist
 
 

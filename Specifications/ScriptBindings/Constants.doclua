@@ -1,6 +1,8 @@
 ---
+--[bind.common.constants]
 --The Constants Library defines a Set of constants in 
 --
+--[bind.common.constants.symbolic]
 --All Types specified here are Symbolic, or for Exposition only.
 --Implementations are not required to distinguish the types in practice. This has the following Side-effects:
 --
@@ -19,6 +21,8 @@
 -- Like all global libraries, All fields in Constants may not be assigned, nor may any fields of such fields, etc. recursively.
 -- @module Constants
 -- @usage local Constants = require"Constants";
+-- 
+-- 
 
 
 
@@ -26,22 +30,31 @@
 ---
 --@type PokemonType
 --The Symbolic type of values in the Types table.
---Follows the Symbolic Type Rules
+--Follows the Symbolic Type Rules [bind.common.constants.symbolic]
+--
+--[bind.common.constants.pkmtype]
 
 ---
 --@type MoveCategory
 --The Symbolic type of values in the Constants.Categories table
---Follows the Symbolic Type Rules
+--Follows the Symbolic Type Rules [bind.common.constants.symbolic]
+--
+--[bind.common.constants.mvcat]
 
 ---
 --@type Stat
 --The Symbolic type of values in the Stats table, except for the 3 In-Battle Stats
---Follows the Symbolic Type Rules
+--Follows the Symbolic Type Rules [bind.common.constants.symbolic]
+--
+--[bind.common.constants.stat]
 
 ---
 --@type InBattleStat
 --The Symbolic type of 3 In-Battle Stats defined in the Stats tables.
---Follows the Symbolic Type Rules
+--Follows the Symbolic Type Rules [bind.common.constants.symbolic]
+--
+--[bind.common.constants.battlestat]
+
 
 
 
