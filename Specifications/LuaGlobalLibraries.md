@@ -58,7 +58,7 @@ function setfenv(table)
 
 All fields may not be assigned, except that any field not defined here may be assigned in the local environment. 
 
-### Implementation Specific Libraries [lua.lib.impl] ###
+## Implementation Specific Libraries [lua.lib.impl] ##
 
 The implementation may choose to add any lua standard library to the global environment, or any additional library with the following restrictions:
 
@@ -67,13 +67,13 @@ The implementation may choose to add any lua standard library to the global envi
 
 It is unspecified which libraries are added to the global environment this way. Other lua global functions may not be added this way.  
 
-### Recursive Immutability Rule [lua.lib.immutability] ###
+## Recursive Immutability Rule [lua.lib.immutability] ##
 
 All tables and libraries defined here apply the recursive immutability rule. That is, no index of the table may be assigned, and all table members of that table apply the same rule. 
-The exception is that fields of _ENV may be assigned if they are not defined by this document, and such table fields are except from the recursive immutability rule. 
+The exception is that fields of _ENV may be assigned if they are not defined by this document, and such table fields are exempt from the recursive imutability rule. 
 This rule also applies to all tables loaded via require. 
 
-### Table Access Rule [lua.lib.tabacc] ###
+## Table Access Rule [lua.lib.tabacc] ##
 
 Additionally, table access is only well defined by this specification for any table or library if the key is either a string or a positive integer. Table access with any other key type results in undefined behavior. 
 
@@ -86,8 +86,8 @@ function setfenv(env); //(3)
 ```
 
 1. Obtains a reference to the global environment. If this is used in a lua source file, returns a table that contains All members of the local environment, and any fields defined in the file, except ones defined with local. Specifically `_G._G` is an identical expression to `_G`. 
-2. Obtains a reference to the current environment. If setfenv has not been used in the present environment, then results in a table that contains all members of the the local environment, including any fields defined by the file, except ones defined with local. Additionally, contains all fields defined with local by the directly enclosing scope, and all external enclosing scopes, except Upvalue scopes. Otherwise, results in the table passed to setfenv. If it has not be changed, it is unspecified if defining a field by assigning its index in `_ENV` results in defining that field at file scope or in the current scope. If it has been changed via setfenv, then defining a field by assigning its index in `_ENV` only affects the current block scope, except that the changes are reflected in the table passed to setfenv. 
-3. Sets the table that is bound to _ENV. The local environment of the current block scope becomes the table, until the scope exists. 
+2. Obtains a reference to the current environment. If setfenv has not been used in the present environment, then results in a table that contains all members of the the local environment, including any fields defined by the file, except ones defined with local. Additionally, contains all fields defined with local by the directly enclosing scope, and all external enclosing scopes, except Upvalue scopes. Otherwise, results in the table passed to setfenv. If it has not be changed, it is unspecified if defining a field by assigning its index in `_ENV` results in defining that field at file scope or in the current scope. If it has been changed via setfenv, then defining a field by assigning its index in `_ENV` only affects the current block scope, except that the changes are reflected in the table passed to setfenv. `_ENV` is always defined in the current block scope, and `_ENV._ENV` is an identical expression to `_ENV`.
+3. Sets the table that is bound to `_ENV`. The local environment of the current block scope becomes the table, until the scope exists. 
 
 ## Lua Version [lua.lib.ver] ##
 
@@ -120,9 +120,9 @@ Contains a subset of the standard math functions defined by lua.
 ### Math library Synopsis ###
 
 ```lua
-pi = acos(1);
-e = exp(1);
-huge = --[[Infinity]];
+pi = see below;
+e = see below;
+huge = see below;
 function sin(a)
 function cos(a)
 function tan(a)
@@ -162,8 +162,8 @@ e = see below; //(3)
 ```
 
 1. The largest possible value. Defined as Infinity. 
-2. The constant pi. The value shall be the result of the function `acos(1)`. 
-3. The constant e. The value shall be the result of the function `exp(1)`.
+2. The constant pi. The value shall be equal to the result of the function `acos(-1)`. 
+3. The constant e. The value shall be equal to the result of the function `exp(1)`.
 
 ### Trigonometric Functions [lua.lib.math.trig] ###
 
@@ -181,7 +181,10 @@ function tanh(a) //(10)
 ```
 
 1. Computes the sine of angle a, in radians. 
-
+2. Computes the cosine of angle a, in radians.
+3. Computes the tangent of angle a, in radians.
+4. Computes the Arcsine of r, where r is in [-1,1]. For any r, sin(asin(r))==r. (The reverse does not always hold, that is, asin(sin(a)) does not necessarily equal a). 
+5. 
 
 
 

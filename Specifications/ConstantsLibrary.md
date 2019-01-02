@@ -47,12 +47,11 @@ The following operations are not defined for values of a Symbolic type. Formally
 * Equality/Inequality Comparison between invalid values of the same type, or between an invalid value and a valid value, even if such a comparison would otherwise be well defined. 
 * Equality/Inequality Comparison between values of any symbolic type and any value of a different type, even if such a comparison would otherwise be well defined. 
 * Relational Comparison between a value of a symbolic type and any value, even if such a comparison would otherwise be well defined. 
-* All type sensitive operations, including type(). 
 * Conversion to/Use as any other type in lua, except boolean. 
 * Indexing/Assigning an index of the value, including via pairs/ipairs
 * Any arithmetic, bitwise (if supported), or concatination operator
 
-
+Additionally, the result of using type() on a value of a symbolic type is unspecified. 
 
 
 
