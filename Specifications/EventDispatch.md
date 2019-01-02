@@ -4,7 +4,7 @@ PokemonSMS Public Specification Project, Copyright 2018 Connor Horman
 Pokemon, the Pokemon Logo, and all Official Pokemon are Copyright Nintendo and Game Freak. This Project is in no way affiliated with Nintendo or Game Freak, and disclaims all relation with the above parties. This project is intended as a Fan Game, or as Parody of Legitimate Pokemon titles, and no Concreate Game produced using this project should be considered legitimate or affiliated to the above companies, unless they provide official consent to the connection. This project, and all games produced using this specification intend no copyright infringement or Intellectual Property theft of any kind.<br/><br/>
 
 
-The PokemonSMS Battle Event Handling Specification("This Document"), provided by the PokemonSMS Public Specification Project ("This Project"), is Copyright Connor Horman("The Owner"), 2018. 
+The PokemonSMS Event Dispatch Definition("This Document"), provided by the PokemonSMS Public Specification Project ("This Project"), is Copyright Connor Horman("The Owner"), 2018. 
 Using the license specified by the project, you may, with only the restrictions detailed below,
 (a)Use this document to produce a complete or partial implementation of PokemonSMS, 
 (b)Use this document as reference material to create other related projects or derivative works,
@@ -25,22 +25,41 @@ You may not, under any circumstances,
 
 ## Information ##
 
-This document defines the logical sequence of events that occur during battle (this provides sequencing on event handlers). 
+This document defines how events are dispatched and handled by PokemonSMS.
 
-# Battle Event Handling #
+# Event Dispatching [event] #
 
-## Handling Combat Moves ##
-A combat move is defined as a move registered with category=Constants.Categories.PHYSICAL or Constants.Categories.SPECIAL. 
+Event's are used to connect the execution sequence dealing with various parts of PokemonSMS to parts of the PokemonSMS Core Libraries and Extensions. 
 
-Combat Moves deal damage, they have secondary effects and are affected by type effectiveness. 
+## Event Library [event.lib] ##
 
-During Battle b, when Pokemon a, controlled by Side s, uses a Combat Move m on the list of targets ts..., Resolve the following for each target t in ts... in slot order, except that if any step causes the move to fail, then no additional steps are applied: 
-1. Create a State k for the move. The state has the type Battle#CombatState as defined in the ScriptBindings specification. The Source is a, the Source Side is s, the Move is m, the base category is m:getCategory(), the base type is m:getType(), the target is t, the target side is t:getSide(), and the battle is b. 
-2. Check move preconditions. If m:hasTrait("ohko") is true, then t:getLevel() <= b:getLevel() must also be true, or the move fails with `{"translate":"traits.ohko.cantaffect"},m:getName(),t:getName()`. 
-3. Check move accuracy. If m:hasTrait("noaccuracy") is true, then skip this step. Otherwise resolve the following sequence in order.
-    1. Set the Base Accuracy Modifier to a:getInBattleStat(Constants.Stats.Accuracy) and the base Evasion Modifier to t:getInBattleStat(Constants.Stats.Evasion)
-    2. If m.getAccuracy is a function value or a table with a `__call` metatag, then the base accuracy value is set to the result of m:getAccuracy(a,t)
-    3. Otherwise the base accuracy value is set to m.accuracy field. This shall be a number between 0 and 1.
-    4. An event of type Events.Battle.Combat.CheckAccuracy is published as below
-        1. If m subscribes to that event for source = a, then it recieves that event with parameters a,t,b,m,s
-        2. If a subscribes to that event for source = a, then it recieves that event with parameters
+The Event Library contains a set of constants, which act the same as constants in the Constants Library ([bind.constants]). They all possess the symbolic type `Event` ([bind.constants.symtype]), and act as such. 
+
+There also exists a function call newEventBus()
+
+### Event Library Synopsis [event.lib.def] ###
+
+```lua
+local Events = library;
+Events.Battle = immutable {};
+Events.Battle.Ability = immutable {};
+Events.Battle.Ability.Lifetime = immutable {};
+Events.Battle.Ability.Lifetime.Start = unspecified;
+Events.Battle.Ability.Lifetime.End = unspecified;
+Events.Battle.Ability.Lifetime.Refresh = unspecified;
+Events.Battle.Ability.LocalLifetime = immutable {};
+Events.Battle.Ability.LocalLifetime.Start = unspecified;
+Events.Battle.Ability.LocalLifetime.End = unspecified;
+Events.Battle.Ability.LocalLifetime.Refresh = unspecified;
+Events.Battle.Combat = immutable {};
+Events.Battle.Combat.MoveUsed = unspecified;
+Events.Battle.Combat.CheckAccuracy = unspecified;
+Events.Battle.Combat.CheckTypeEffectiveness = unspecified;
+Events.Battle.Combat.CheckStats = unspecified;
+Events.Battle.Combat.
+```
+
+## Subscribing to Events [event.subscribe] ##
+
+A Component 
+
