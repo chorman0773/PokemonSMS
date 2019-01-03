@@ -1,4 +1,4 @@
-<h1>PokemonSMS Public Specification Project</h1>
+# PokemonSMS Public Specification Project #
 The specification documents provided here are written and provided by the PokemonSMS Public Specification Project. 
 The Project, all contained documentation and all associated "exemplar" code are (c) 2018 Connor Horman. 
 
@@ -9,7 +9,7 @@ In addition, the PokemonSMS Core and Specification do not claim to be an officia
 Unless otherwise specified on an implementation defined basis, no implementions of PokemonSMS are official Pokemon Games of any kind and are to be considered a Parody of such official titles, and hold no affiliation with Nintendo or Game Freak. 
 An implementation may be treated as such if and only if the copyright holder of the implementation has obtained prior written permission from Nintendo and/or Game Freak. 
 
-Any person or persons may use, in part or in whole, any document contained within the PokemonSMS Specification, to do any of the following:
+Any person or persons may use, in part or in whole, any document contained within the PokemonSMS Public Specification, to do any of the following:
 
 <ul>
 <li>Provide Full or Partial Implementations of PokemonSMS or similar projects</li>

@@ -50,11 +50,15 @@ Despite Caching the result of require in package.loaded having visible side effe
 
 
 
-## Lua Standard Libraries [lua.lib] ##
+## Numeric Calcuations [lua.num] ##
 
-Some libraries, which can have externally visible side effects, are made available by the lua 5.2 language. These libraries, if exposed, would allow source files to break the sandbox enforced by this specification. In order to preserve the execution independence, these libraries MUST NOT be exposed to lua source files. 
+There are 2 distinct numeric types specified in the modified lua that apply to this specification, integer and float. These types have similar, but distinct handling. Integer values shall be treated as a 32-bit signed integer using 2s compliment representation. Float values shall be treated as a 64-bit IEC 559 double-precision floating point value, except that Signaling NaN values are not distinct from Quiet NaN values. 
 
+An integer value is result of one of the following expressions:
+* An integer literal, which is a number literal that does not contain a decimal point, an exponent, and is representable as an integer value
+* The "index" value obtained with the ipairs iterator or similar iterators. 
+* The result of the addition operator, subtraction operator, multiplication operator, and division operator when both operands are integer values
+* The result of the unary minus operator, when the operand is an integer value
+* The result of any function in the bit32 library.
 
-The full list of libraries and functions which MUST NOT be exposed is as follows:
-
-* The os, coroutine, io 
+All addition/subtraction/multiplication involving integer values (and only integer values), shall be carried out in the domain of 32-bit signed integers. It is unspecified if division is carried out in this domain, but the result must be truncated (round-towards-zero) if it is not representable in an integer. If an integer value is divided by 0 this way, the implementation must raise an error. If overflow would occur, the result shall be the result of performing this operation with float values instead, after which the result is truncated to an infinite precision integer, of which the low order 32-bits are preserved, and the result is the value (overflows result in wraparround to negative values). 

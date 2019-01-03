@@ -34,13 +34,14 @@ A combat move is defined as a move registered with category=Constants.Categories
 
 Combat Moves deal damage, they have secondary effects and are affected by type effectiveness. 
 
-During Battle b, when Pokemon a, controlled by Side s, uses a Combat Move m on the list of targets ts..., Resolve the following for each target t in ts... in slot order, except that if any step causes the move to fail, then no additional steps are applied: 
+If a calculation only takes place with integer values, 
+
+During Battle b, when Pokemon a, controlled by Side s, uses a Combat Move m on the list of targets ts..., Resolve the following for each target t in ts... in slot order, except that if any step causes the move to fail, then no additional steps are applied for that target: 
 1. Create a State k for the move. The state has the type Battle#CombatState as defined in the ScriptBindings specification. The Source is a, the Source Side is s, the Move is m, the base category is m:getCategory(), the base type is m:getType(), the target is t, the target side is t:getSide(), and the battle is b. 
 2. Check move preconditions. If m:hasTrait("ohko") is true, then t:getLevel() <= b:getLevel() must also be true, or the move fails with `{"translate":"traits.ohko.cantaffect"},m:getName(),t:getName()`. 
 3. Check move accuracy. If m:hasTrait("noaccuracy") is true, then skip this step. Otherwise resolve the following sequence in order.
     1. Set the Base Accuracy Modifier to a:getInBattleStat(Constants.Stats.Accuracy) and the base Evasion Modifier to t:getInBattleStat(Constants.Stats.Evasion)
     2. If m.getAccuracy is a function value or a table with a `__call` metatag, then the base accuracy value is set to the result of m:getAccuracy(a,t)
     3. Otherwise the base accuracy value is set to m.accuracy field. This shall be a number between 0 and 1.
-    4. An event of type Events.Battle.Combat.CheckAccuracy is published as below
-        1. If m subscribes to that event for source = a, then it recieves that event with parameters a,t,b,m,s
-        2. If a subscribes to that event for source = a, then it recieves that event with parameters
+    4. An event of type Events.Battle.Combat.CheckAccuracy is published as below. The source of the event is a, and the parameters are a,t,b,m,k.
+    5. The modified accuracy value is calculated as q*c/v, where q is the base accuracy value, c is the accuracy modifier, and v is the evasion modifier. If this is 1 or greater, then the move hits. Otherwise, if a random number in (0,1] is greater than this value, the move fails with `{"translate":"generic.combat.miss"},m:getName()`. Otherwise the move hits. 
