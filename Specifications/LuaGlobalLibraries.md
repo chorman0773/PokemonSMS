@@ -75,7 +75,9 @@ This rule also applies to all tables loaded via require.
 
 ## Table Access Rule [lua.lib.tabacc] ##
 
-Additionally, table access is only well defined by this specification for any table or library if the key is either a string or a positive integer. Table access with any other key type results in undefined behavior. 
+Additionally, table access is only well defined by this specification for any table or library provided by this specification if the key is either a string or a positive integer. Table access with any other key type results in undefined behavior. 
+
+Additionally, the key must be a valid lua identifier, and may not start with 2 underscores. The behavior of indexing a table or library provided by this specification if the key is not a valid lua identifier, or starts with 2 underscores. 
 
 ## Environment Variables [lua.lib.env] ##
 

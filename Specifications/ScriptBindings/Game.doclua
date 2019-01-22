@@ -6,16 +6,19 @@
 ---
 --@function[parent=#Game] generateProlougePokemon(species)
 --Generates a Pokemon for use in the Prolouge, which has the species given by species 
---No Restrictions are imposed by this specification as to any values associated with the Pokemon
+--All values assigned to the pokemon are unspecified, but shall be valid. 
 --
---Note:
---This function may only be called during the Prolouge Sequence (defined in /lib/lua/client/Prolouge.lua).
---The behavior of this function outside of this sequence is indeterminate.
---In particular, implementations may choose to take the action, ignore the action and return nil,
---generate an error, or undefine this function entirely.  
---Specifically the behavior is undefined, except that implementations are not allowed to take a Meaningless Action (TermsAndDefitions#Meaningless Actions)
+--Multiple calls to this function with the same species,
+-- need not result in the same, or an equivalent pokemon
+--
+--Calling this function outside of the Prolouge Sequence ([seq.prolouge]), is conditionally supported. 
+--If supported, the result of calling this function shall be the same as calling it during prolouge.
+--Otherwise, the behavior is undefined. 
+--
+--The behavior of modifying any field of the pokemon using the provided binding methods is undefined. 
+--
 --@param #string species A Resource Location which names the species of pokemon to generate
---@return Types#Pokemon the Pokemon that was generated
+--@return Pokemon#Pokemon the Pokemon that was generated
 --@return #nil if species is not a valid resource location, or does not name a pokemon
 --
 --[bind.client.game.genProlougePkm]

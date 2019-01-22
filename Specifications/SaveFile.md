@@ -325,7 +325,7 @@ Numbers are serialized as `TAG_Double` (if they do not meet the requirements for
 
 Strings are serialized as `TAG_String`. Boolean values are serialized as the `TAG_Byte` containing 1b if they are true, and the `TAG_Byte` containing 0b if they are false. 
 
-It is unspecified which userdata types can be serialized in NBT Form. 
+It is unspecified which userdata types can be serialized in NBT Form, except that the Duration type shall be serialized in a table as *name*Seconds as a `TAG_Long` and *name*Nanos as a `TAG_Int`, and shall be serialized in a list as a compound containing a `TAG_Long` Seconds field and `TAG_Int` Nanos field. 
 
 
 
@@ -364,7 +364,7 @@ Pokemon stored in the Save file take the following format:
     * Extra (compound): The Serialization of the Extra Table. Species Dependent. May not Exist
     * Moves (list): Specifies the moves the pokemon knows. May have at most 4 tags
         * (a move) (compound):
-            * Move (string): The name of the move. Must be a valid resource location that names a move or the file is ill-formed. If this names `system:moves/null`, then no other tags may be defined, and subsequent moves are required to either not exist or have its Move field be `system:moves/null`. 
+            * Move (string): The name of the move. Must be a valid resource location that names a move or the file is ill-formed. If this names `system:moves/null`, then no other tags may be defined. 
             * RemainingPP (byte): The PP the move has remaining. 
             * NumPPUps (byte): The number of PP Ups used on the move. May be at most 3 or the file is ill-formed. May not exist
     * Ability (string): The name of the ability of the pokemon. Must be a valid resource location that names an ability. If the Pokemon cannot have the ability specified, the result is unspecified. 
@@ -376,7 +376,7 @@ Items are Stored in the following structure:
 * (an item) (compound)  (Tags common to all items)
     * Id (string): The resource name that identifies the item. Must be a valid resource location that names an item or the file is ill-formed.
     * Count (short): The number of items in the stack. May not Exist. If undefined, defaults to 1. If it is defined, it must be the value 1 if the compound appears in a Pokemon's Items compound. 
-    * Variant (string): The Variant Id of the item. May not exist, defaults to 0. The range of valid values and the properties of item variants is depedent on the item. 
+    * Variant (string): The Variant Id of the item. May not exist, defaults to the default variant. The set of valid values and the properties of item variants is depedent on the item. 
     * Extra (compound): The serialization of the Item's Extra Table. Item Dependent. May Not Exist
 
 

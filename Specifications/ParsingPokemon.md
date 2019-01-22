@@ -5,7 +5,7 @@ PokemonSMS Public Specification Project, Copyright 2018 Connor Horman
 Pokemon, the Pokemon Logo, and all Official Pokemon are Copyright Nintendo and Game Freak. This Project is in no way affiliated with Nintendo or Game Freak, and disclaims all relation with the above parties. This project is intended as a Fan Game, or as Parody of Legitimate Pokemon titles, and no Concreate Game produced using this project should be considered legitimate or affiliated to the above companies, unless they provide official consent to the connection. This project, and all games produced using this specification intend no copyright infringement or Intellectual Property theft of any kind.<br/><br/>
 
 
-The PokemonSMS Hidden Implementation Variable Definition("This Document"), provided by the PokemonSMS Public Specification Project ("This Project") is Copyright Connor Horman("The Owner"), 2018. 
+The PokemonSMS Pokemon Construct Parsing("This Document"), provided by the PokemonSMS Public Specification Project ("This Project") is Copyright Connor Horman("The Owner"), 2018. 
 Using the license specified by the project, you may, with only the restrictions detailed below,
 (a)Use this document to produce a complete or partial implementation of PokemonSMS, 
 (b)Use this document as reference material to create other related projects or derivative works,
@@ -23,9 +23,18 @@ You may not, under any circumstances,
 <br/><br/>
   This Document, and this project are distributed with the intention that they will be useful and complete. However this document and this project are provided on an AS-IS basis, without any warranties of Any Kind, including the implied warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. As such, any person using this document for any reason does so at their own risk.  By using this document, you explicitly agree to release The Owner, and any person who might have distributed a copy of this document to you from all liability connected with your use of this document
 <br/><br/>
-## Information ##
-This document lists "hidden variables", which are not defined as readable by the specification, but are referenced by the specification in various contexts. 
+## Info ##
+This document describes how to generally transform pokemon descriptors defined by the core libraries.
 
-# Hidden Variables [vars] #
-Various information about the state is used by the specification to define various actions, though are not accessable to the Core Libraries or to Extensions. 
-This specification will refer to that information as Hidden Variables. There is no requirement to actually store these hidden variables, provided that actions that depend on various hidden variables are executed as though they contain the values enforced by this specification. 
+# Pokemon Descriptor Interpretation #
+
+A Pokemon Descriptor is a Lua table, which contains only string keys, where each key has its meaning defined below. 
+
+## Field List ##
+
+```
+{
+	loc= string,
+	name=
+}
+```

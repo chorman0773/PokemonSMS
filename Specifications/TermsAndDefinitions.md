@@ -180,6 +180,12 @@ Behavior which is not constrained (or are loosely constrained) by the specificat
 
 Similar to Implementation-Defined Behavior however implementations are not required to document the results of unspecified behavior. Under most circumstances unspecified behavior is required to be handled deterministically and consistently.  
 
+## Conditionally Supported [terms.condsupport] ##
+
+Some behavior defined by this specification is "conditionally supported". It is implementation-defined whether or not this behavior is supported. 
+The effects of taking a conditionally supported action which is supported by the implementation depends on the action itself. 
+The result of taking a conditionally supported action that is not supported is either an Illegal Action, or results in Undefined Behavior. 
+
 ## Implementation Specific Behavior [terms.implspec] ##
 
 The Superset of Implementation-Defined Behavior and Unspecified Behavior. 
