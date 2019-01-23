@@ -6,7 +6,7 @@
 		"cci-signature-verification":"strict"
 	},
 	"resource-info":{
-		"signature-path":"https://github.com/chorman0773/PokemonSMS-Vanilla-Engine/bin/pokemonsms-sig",
+		"signature-path":"https://github.com/chorman0773/PokemonSMS/blob/runtime/bin/pokemonsms-sig",
 		"name":"PokemonSMS",
 		"copyright":"(c) 2018, Connor Horman"
 	}
