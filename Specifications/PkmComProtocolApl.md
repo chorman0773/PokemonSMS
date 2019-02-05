@@ -28,19 +28,17 @@ You may not, under any circumstances,
 The PkmCom Abstract Protocol Layout defines how PkmCom structures Packets, how errors in general are checked and handled, as well as the relationship between the Server and the Client, and the Overview of the Initial Connection Handshake. The APL does NOT define the Concrete Packet Definitions, or Specifics about the Concrete protocol definition. (See /Specifications/PkmComCompleteDefinition.md for actual structure detail).
 
 
-[pkmcom]
 
-# PkmCom Apl #
 
-[pkmcom.types]
+# PkmCom Apl [pkmcom] #
+
+## Types [pkmcom.types] ###
 
 
 PkmCom Packets are divided into Types. These types define how many bytes a field takes up (size), how that field is verified (hashcode), and what Preconditions are implied by the field.<br/>
 All Multibyte Data types are read and written in Big-Endian (network) Byte order. (So a short s is written as (s>>8)0xff followed by s&0xff.<br/><br/>
 
-## Type List ##
-
-[pkmcom.types.basic]
+### Type List [pkmcom.types.basic] ###
 
 
 The PkmCom APL defines 21 Types by default. The types are as Such:
@@ -54,43 +52,43 @@ The PkmCom APL defines 21 Types by default. The types are as Such:
 	<tr>
 		<td>Byte</td>
 		<td>1</td>
-		<td>An Unsigned 1-byte Integer in (0,256]
+		<td>An Unsigned 1-byte Integer in [0,256)
   		<td></td>
   	</tr>
   	<tr>
   		<td>Signed byte</td>
   		<td>1</td>
-  		<td>A signed (2s Compliment) 1-byte integer in (-128,128]</td>
+  		<td>A signed (2s Compliment) 1-byte integer in [-128,128)</td>
   		<td></td>
   	</tr>
   	<tr>
   		<td>Short</td>
   		<td>2</td>
-  		<td>A Signed (2s Compliment) 2-byte Integer in (-32768,32768]</td>
+  		<td>A Signed (2s Compliment) 2-byte Integer in [-32768,32768)</td>
   		<td></td>
 	</tr>
 	<tr>
 		<td>Unsigned Short</td>
 		<td>2</td>
-		<td>An Unsigned 2-byte Integer in (0,65536]</td>
+		<td>An Unsigned 2-byte Integer in [0,65536)</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td>Int</td>
 		<td>4</td>
-		<td>A Signed (2s Compliment) 4-byte Integer in (-2147483648,2147483648]</td>
+		<td>A Signed (2s Compliment) 4-byte Integer in [-2147483648,2147483648)</td>
 		<td></td>
 	</tr>
 	<tr>
 		<td>Unsigned Int</td>
 		<td>4</td>
-		<td>An Unsigned 4-byte Integer in (0,4294967296]</td>
+		<td>An Unsigned 4-byte Integer in [0,4294967296)</td>
 		<td>The Base Implementation only uses Unsigned Int Bitflags, and as the Hashcode field of Packet</td>
 	</tr>
 	<tr>
 		<td>Long</td>
 		<td>8</td>
-		<td>A Signed (2s Compliment) 8-byte Integer in (-9223372036854775808,9223372036854775808]</td>
+		<td>A Signed (2s Compliment) 8-byte Integer in [-9223372036854775808,9223372036854775808)</td>
 		<td></td>
 	</tr>
 	<tr>
@@ -179,7 +177,7 @@ The PkmCom APL defines 21 Types by default. The types are as Such:
 	</tr>
 </table>
 
-[pkmcom.types.struct]
+### Structure Types [pkmcom.types.struct] ###
 
 PkmCom also specifies Structure Types, (though none such types are defined in The PkmCom APL). 
 Structure Types are defined to contain fields of any other type defined in PkmCom
@@ -212,9 +210,8 @@ Any example of a Structure type is as follows:
 <br/>
 In general: The size of a structure type is the total size of its fields, and the hashcode of a structure type is computed from the hashcode of each field. Finally the Preconditions of the structure type include the preconditions of each field, as well as potentially individually defined preconditions.<br/><br/>
 
-## Packet Format ##
+## Packet Format [pkmcom.packet] ##
 
-[pkmcom.packet]
 
 PkmCom uses an Headed Packet Format which stores several fields (listing enough information to identify and validate the packet contents. 
 Packet is itself considered a Structured Type in the PkmCom protocol, though may never be used as such in a packet. 
@@ -249,9 +246,9 @@ The structure of a Packet is as follows:
 	</tr>
 </table>
 
-## Packet Verification (Hashcodes) ##
+## Packet Verification (Hashcodes)  [pkmcom.hash]##
 
-[pkmcom.hash]
+
 
 PkmCom uses a 4-byte Unsigned Hashcode to verify and validate that the content of the packet was received correctly.
 Each type defines it own rules for how this hashcode is computed.<br/>
@@ -267,9 +264,9 @@ The hashsum function is defined for n inputs as follows:<br/>
 </ol>
 This function is defined to provide a consistent method of chaining value hashcodes together in a order-sensitive manner.
 
-### Hashcode Definitions ###
+### Hashcode Definitions [pkmcom.hash.def] ###
 
-[pkmcom.hash.def]
+
 
 The hashcode of each type is given as such:
 <ul>
@@ -290,25 +287,22 @@ The hashcode of each type is given as such:
 <li>Packet: The hashcode of a packet is the hashsum of its id and content. Note that neither the size nor hashcode fields are included (otherwise we would have an issue with hashcode field).</li>
 </ul>
 
-## Rules/Preconditions ##
+## Rules/Preconditions [pkmcom.rules] ##
 
-[pkmcom.rules]
 
 Each type in PkmCom may additionally define a set of preconditions, that is, rules about the stored value. If a packet recieved contains any fields with values in violation of these rules, the recieving side MUST generate a Protocol Error<br/>
-The Rules of each type in PkmCom that defines any are as follows:
-<li>T Enum: The value must be one of the values specified in its definition, or an unused value. (No other values of T may be sent).</li>
-<li>T Bitflag: Any bits which are defined as "Reserved" may not be clear. Note that any other bit may be set (even unspecified ones).</li>
-<li>Float, Double: Float and Double values may not be a NaN value. This restriction is put in place due to varying handling of NaNs, and the fact that whether or not the bit representation of a NaN is preserved. Note that implementations which support signalling NaNs, must generate the protocol error BEFORE raising a Floating-Point exception.</li>
-<li>Instant, Duration: The Nanos field must be in the range (0,1000000000]. The Seconds field must be in the range (-31556889864401400,31556889864401400].</li>
-<li>String, Long String: The String must end on either a valid single-byte character, or a complete multi-byte character. 
-If a header byte is read it must be followed by the correct number of continuation bytes, before the next header byte or single-byte character. 
-If a continuation byte is read, it must have been preceeded by a header byte or at most 1 other continuation byte, which itself is preceeded by a header byte specifying a 3 byte character. Embedded Nul(0) Bytes are Not Permitted</li>
-<li>Json, Long Json: The Raw representation must meet the Preconditions for String/Long String Respectively. In addition, the text must be a valid Json Object which is enclosed in `{}`.</li>
-</ul>
+The Rules of each type in PkmCom that defines any are as follows: 
+* Boolean: The value must either be true (1) or false (0) and may be no other bitpattern. 
+* T Enum: The value must be one of the values specified in its definition, or an unused value. (No other values of T may be sent). 
+* T Bitflag: Any bits which are defined as "Reserved" may not be clear. Note that any other bit may be set (even unspecified ones). 
+* Float, Double: Float and Double values may not be a NaN value. This restriction is put in place due to varying handling of NaNs, and the fact that whether or not the bit representation of a NaN is preserved. 
+* Instant, Duration: The Nanos field must be in the range (0,1000000000]. The Seconds field must be in the range (-31556889864401400,31556889864401400].
+* String, Long String: The String must end on either a valid single-byte character, or a complete multi-byte character. If a header byte is read it must be followed by the correct number of continuation bytes, before the next header byte or single-byte character. If a continuation byte is read, it must have been preceeded by a header byte or at most 1 other continuation byte, which itself is preceeded by a header byte specifying a 3 byte character. Embedded Nul(0) Bytes are Not Permitted
+* Json, Long Json: The Raw representation must meet the Preconditions for String/Long String Respectively. In addition, the text must be a valid Json Object which is enclosed in `{}`. 
 
-# Connection Handshaking #
 
-[pkmcom.handshake]
+## Connection Handshaking [pkmcom.handshake] ##
+
 
 The PkmCom protocol is built on TCP. When the connection is opened, and after the TCP Handshake, The Server and Client preform a Secret Key exchange to send data over a channel secured by AES-256, using Cipher Block Chaining, and Padded with PKCS5 Padding.<br/>
 The steps of the key exchange are preformed as follows:
@@ -319,15 +313,13 @@ The steps of the key exchange are preformed as follows:
 <li>The 2 messages are Combined by XORing each byte in sequence, and also combine the IVs by the same method. The message is then used to Derive a 256-bit AES Key, using SHA-256. Past this point AES Encryption is used, with the XORed IVs used for Cipher Block Chaining</li>
 <li>The Client should then send a Handshaking Packet (0xFF, See below). If its read correctly, then the server should respond with the same packet. If either packet is read incorrectly, the connection is closed (though may be reopened).</li>
 </ol>
-## Handshaking Packet ##
+### Handshaking Packet [pkmcom.handshake.packet] ###
 
-[pkmcom.handshake.packet]
+
 
 This Packet is sent and verified at the end of the handshake sequence. It contains a single Unsigned Int Enum Field, which should be exactly 0x504B4D00. The Id of the Packet is 0xFF.
 
-## Alternative Handshaking ##
-
-[pkmcom.handshake.alt]
+### Alternative Handshaking [pkmcom.handshake.alt] ###
 
 In certain situations, an alternative method is used to derive the Session Shared Secret, such as a password. 
 After the messages are exchanged, if indicated by the server, the client and server should append some sort of alternatively exchanged secret to the combined messages (usually a password exchanged physically, such as in person). The AES Key should then be derived from that, and handshaking should be completed from that point. 
@@ -335,6 +327,4 @@ After the messages are exchanged, if indicated by the server, the client and ser
 This is primarily used in LAN (indicated by the 0x80 bit set in the LAN Game type bitfield), but Servers can use this by requesting the secret be re-established with the reason code being set to 1 (password required), and as such, implement non-exclusive whitelists (whitelists that are not associated with one save file, or one sentry account, but are protected by a password). 
 
 It is implementation-defined if a client supports alternative handshaking. 
-
-
 
