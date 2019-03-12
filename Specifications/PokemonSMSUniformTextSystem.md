@@ -27,10 +27,10 @@ You may not, under any circumstances,
 ## Information ##
 This document defines the uniform text system used by PokemonSMS, to define how various text elements encountered should be printed/drawn. 
 
-# Text System #
+# Text System [text] #
 PokemonSMS's Text System is broken into 2 parts: Text Components, which are the actual components of text that can be printed or drawn; and Translation Blocks, which are how Unlocalized String are converted to concrete Text Components, and defines locale information. 
 
-## Text Components ##
+## Text Components [text.comp] ##
 Text Components are json objects which describe text. Text Components have 2 direct operations: format, and display. 
 A Text Component contains a type, usually some text, other data specified by the type, and an optional continue field which contains subsequent text components. 
 How format and display work depend on the type of the component. 
@@ -68,14 +68,14 @@ To replace a component with another do the following:
 <li>If the original component had a continue field, then set the continue field of the first component in the new component's hierarchy which does not have a continue field to the object which is specified by the original component's continue field  
 </ol>
 
-## Translation ##
+## Translation [text.translate] ##
 Translatable Text Components are mapped by their translation key to a component in an implementation defined language file. The translation key is the "text" of the translatable component. 
 
 The key is first split at every `.`. The first token is the key into the `entries` object. That key should name an object with a `tree` key, unless it is the only token. This process is repeated for the `tree` of the previous level and the next token until there are no more tokens, there is no `tree` object in the previous level, or the token does not name an object in the `tree`. (This process is known as the key search). 
 When the final token is consumed, there should be a `"component"` object in the level. The translatable text component is replaced with that object. If there is no `component` object, or the key search did not find part of the translation key, then the translatable component is replaced with the raw text component which has the same `text` field as the original component. 
 The Language file also specifies locale information. 
 
-## Drawing Images ##
+## Drawing Images [text.img] ##
 When an image text component is drawn, it is instead replaced with the image named by the `text` field of the component, or the portion thereof specified by the `rect` field. 
 
 

@@ -1,0 +1,23 @@
+-------------------------------------------------------------------------------
+-- @module Pokemon
+
+---
+--@type TextComponent
+--A Component of text based on [text.comp], encoded as a table instead of a json object.
+--In all places which a text component may appear, a string s may appear. 
+--That string shall be treated as though it was {type="translateable",text=s}.
+--
+--Only translateable and raw text components are supported directly.
+--
+--@field[parent=#TextComponent] #string type the type of the field
+--@field[parent=#TextComponent] #string text the text of the field
+
+---
+--@type PokemonDescriptor
+--A Descriptor for a Pokemon to be registered. 
+-- 
+
+
+
+
+return nil
