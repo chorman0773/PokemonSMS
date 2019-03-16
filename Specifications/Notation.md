@@ -31,3 +31,8 @@ This document Describes the notation used in this specification.
 ## Range Notation ##
 
 Ranges are specified in this document using Range Notation. For example, [0,1) represents the range between 0 (inclusive), and 1 (exclusive). 
+
+The following range `(,)`, refers to an unbound range (all numbers).
+
+The set which governs the range is given by the context, or by an explicit Z (integers), Q (rational), or R (real). There are no Complex Ranges. 
+

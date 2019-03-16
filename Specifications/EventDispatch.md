@@ -41,6 +41,7 @@ There also exists a function call newEventBus()
 
 ```lua
 local Events = library;
+function Events.newEventBus()
 Events.Battle = immutable {};
 Events.Battle.Ability = immutable {};
 Events.Battle.Ability.Lifetime = immutable {};
@@ -56,10 +57,9 @@ Events.Battle.Combat.MoveUsed = unspecified;
 Events.Battle.Combat.CheckAccuracy = unspecified;
 Events.Battle.Combat.CheckTypeEffectiveness = unspecified;
 Events.Battle.Combat.CheckStats = unspecified;
-Events.Battle.Combat.
+Events.Battle.Combat.CheckDamage = unspecified;
+Events.Battle.Combat.MoveHits = unspecified;
+Events.Battle.Combat.MoveSecondary = unspecified;
 ```
 
-## Subscribing to Events [event.subscribe] ##
-
-A Component 
 
