@@ -1,5 +1,6 @@
 {
-  "update-url":"https://github.com/chorman0773/PokemonSMS-Scripts-Resources.git",
+  "update-url":"https://github.com/chorman0773/PokemonSMS.git",
   "implementation-min":"1.0",
-  "sr-version":"1.0"
+  "pointer":"HEAD",
+  "branch":"core"
 }

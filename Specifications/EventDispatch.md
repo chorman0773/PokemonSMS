@@ -33,7 +33,8 @@ Event's are used to connect the execution sequence dealing with various parts of
 
 ## Event Library [event.lib] ##
 
-The Event Library contains a set of constants, which act the same as constants in the Constants Library ([bind.constants]). They all possess the symbolic type `Event` ([bind.constants.symtype]), and act as such. 
+The Event Library contains a set of constants, which act the same as constants in the Constants Library ([bind.constants]). 
+They all possess the symbolic type `Event` ([bind.constants.symtype]), and act as such. 
 
 There also exists a function call newEventBus()
 
@@ -42,17 +43,12 @@ There also exists a function call newEventBus()
 ```lua
 local Events = library;
 function Events.newEventBus()
-Events.Battle = immutable {};
-Events.Battle.Ability = immutable {};
-Events.Battle.Ability.Lifetime = immutable {};
 Events.Battle.Ability.Lifetime.Start = unspecified;
 Events.Battle.Ability.Lifetime.End = unspecified;
 Events.Battle.Ability.Lifetime.Refresh = unspecified;
-Events.Battle.Ability.LocalLifetime = immutable {};
 Events.Battle.Ability.LocalLifetime.Start = unspecified;
 Events.Battle.Ability.LocalLifetime.End = unspecified;
 Events.Battle.Ability.LocalLifetime.Refresh = unspecified;
-Events.Battle.Combat = immutable {};
 Events.Battle.Combat.MoveUsed = unspecified;
 Events.Battle.Combat.CheckAccuracy = unspecified;
 Events.Battle.Combat.CheckTypeEffectiveness = unspecified;
@@ -60,6 +56,13 @@ Events.Battle.Combat.CheckStats = unspecified;
 Events.Battle.Combat.CheckDamage = unspecified;
 Events.Battle.Combat.MoveHits = unspecified;
 Events.Battle.Combat.MoveSecondary = unspecified;
+Events.Battle.Combat.MoveResolves = unspecified;
+Events.Battle.Status.CheckAccuracy = unspecified;
+Events.Battle.Status.StatusApplies = unspecified;
+Events.Battle.Status.StatusResolves = unspecified;
+Events.Battle.Turn.Begin = unspecified;
+Events.Battle.Turn.CalculatePriority = unspecified;
+Events.Battle.Turn.CalculateActionOrder = unspecified;
 ```
 
 
