@@ -25,7 +25,7 @@ You may not, under any circumstances,
 <br/><br/>
 ### Additional Copyright Information ###
 
-This document references the Named Binary Tag specification, created by Markus Person. The up to date specification can be located at https://wiki.vg/NBT. 
+This document references the Named Binary Tag specification, created by Markus Person. The up to date specification can be located at <https://wiki.vg/NBT>. 
 In the present version of this document, references to that specification imply Version 19133, and DO NOT use GZip or zlib compression. ShadeNBT only allows for uncompressed NBT Data. The specific Specification used defines TAG_LongArray.
 
 ## Info ##
@@ -34,8 +34,6 @@ Defines the Specification for the File Format used to store PokemonSMS Savegames
 
 
 ## ShadeNBT Format [save.shade] ##
-
-
 
 PokemonSMS stores games in the ShadeNBT format, which extends the NBT File Format defined by Markus Person. 
 Standard Save Files take the following Format:
@@ -196,6 +194,11 @@ The `f32` and `f64` tags are floating point numbers encoded in the IEEE 754 (IEC
 		<td>Varies</td>
 		<td>i32 length prefix, followed by that many TAG_Longs</td>
 	</tr>
+	<tr>
+		<td>N/A</td>
+		<td>UUID</td>
+		<td>N/A</td>
+		<td>Either 2 TAG_Longs in the same compound, or a compound containing 2 TAG_Longs, encoding the Most and Least significant 8-byte portions of the 16-byte UUID</td>
 </table>
 
 Other tags may be added in future versions of this Specification. This will be updated to reflect the most current version of the Shade Specification and NBT Specification. 
@@ -264,6 +267,18 @@ The following rules apply to those Strings
 * If any single character that is not part of a Surrogate Pair does not encode a valid Unicode Character, or any Surrogate Pair does not encode a valid Unicode Character
 
 A file which contains a String tag that contains any text that does
+
+#### UUID [save.shade.struct.uuid] ####
+
+UUIDs are not specific tags as of version 1.2 of the Shade Specification. However, UUIDs are still recognized as a distinct type.
+
+A UUID may be stored in one of the following 2 formats:
+
+* If the UUID is present in a compound, and has *name*, it may be encoded as 2 distinct TAG_Longs, one called *name*Most encoding the Most Significant 8-bytes of the UUID, and one called *name*Least, encoding the Least Significant 8-bytes of the UUID.
+* A UUID may also be encoded as a compound, which contains 2 TAG_Longs, one called M encoding the Most Significant 8-bytes of the UUID, and one called L encoding the Least Significant 8-bytes of the UUID.
+
+If a UUID is stored in a compound in multiple formats, the behavior is undefined. 
+
 
 ## Save file generalization and storage [save.generic] ##
 PokemonSMS supports multiple save files. A sqlite database of these save files is stored alongside the actual save files, with the name filename saves.pkmdb. The database shall contain a single table called "Saves" that uses the following Schema. 
