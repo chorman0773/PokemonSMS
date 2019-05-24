@@ -7,12 +7,12 @@ import github.chorman0773.pokemonsms.lua.Delegable;
 import github.chorman0773.pokemonsms.lua.Delegate;
 
 public abstract class Battle implements Delegable<Battle> {
-	protected static class BattleSlot{
+	public static class BattleSlot{
 		int owner;
 		int position;
 		int side;
 		InBattlePokemon pkm;
-		protected BattleSlot(int owner,int position,int side,InBattlePokemon pkm) {
+		public BattleSlot(int owner,int position,int side,InBattlePokemon pkm) {
 			this.owner = owner;
 			this.position = position;
 			this.side = side;
@@ -70,5 +70,15 @@ public abstract class Battle implements Delegable<Battle> {
 		return false;
 	}
 	
-
+	
+	public void sendFirstPokemon(BattleSlot slot,InBattlePokemon pkm) {
+		slot.pkm = pkm;
+	}
+	
+	public void switchPokemon(BattleSlot slot,InBattlePokemon pkm) {
+		slot.pkm = pkm;
+	}
+	public InBattlePokemon getPokemon(BattleSlot slot) {
+		return slot.pkm;
+	}
 }
