@@ -1,5 +1,6 @@
 package github.chorman0773.pokemonsms.siding;
 
+import github.chorman0773.pokemonsms.net.NetworkSide;
 import github.chorman0773.sentry.GameBasic;
 
 public enum EnumSide {
@@ -13,5 +14,9 @@ public enum EnumSide {
 	}
 	public static boolean isServer() {
 		return current()==SERVER;
+	}
+	
+	public NetworkSide toNetworkSide() {
+		return this==CLIENT?NetworkSide.CLIENT:NetworkSide.SERVER;
 	}
 }

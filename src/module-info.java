@@ -12,6 +12,7 @@ module github.chorman0773.pokemonsms {
 	requires transitive github.chorman0773.sentry;
 	requires transitive luaj;
 	requires transitive github.lightningcreations.lclib;
+	requires transitive github.chorman0773.pkmcom;
 	requires sqlite;
 	requires java.base;
 	requires java.sql;
@@ -24,7 +25,5 @@ module github.chorman0773.pokemonsms {
 	exports github.chorman0773.pokemonsms.core.battle;
 	exports github.chorman0773.pokemonsms.lua;
 	exports github.chorman0773.pokemonsms.siding;
-	exports github.chorman0773.pokemonsms.net;
-	exports github.chorman0773.pokemonsms.net.server;
 	provides GameBasic with github.chorman0773.pokemonsms.game.PokemonSMS;
 }

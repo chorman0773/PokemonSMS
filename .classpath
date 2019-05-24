@@ -3,16 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="src" path="Specification"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/LCLib Java">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/Sentry Game Engine">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-10">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -31,6 +21,21 @@
 	<classpathentry kind="lib" path="luaj-3.0.1/lib/luaj.jar" sourcepath="luaj-3.0.1/lib/luaj-sources-3.0.1.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/home/connor/Rem/Users/chorm/PokemonSMS%20Runtime/luaj-3.0.1/docs/api/"/>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/Sentry Game Engine">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/LCLib Java">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/PkmCom APL">
+		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
