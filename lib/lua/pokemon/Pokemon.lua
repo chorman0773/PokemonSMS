@@ -19,9 +19,9 @@
 
 ---
 --@field Events#Events Events
-local Events = require"Events"
+local Events = require"Events";
 
-local Constants = require"Constants"
+local Constants = require"Constants";
 
 local Registries = require"Registries";
 
