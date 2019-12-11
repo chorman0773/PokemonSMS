@@ -144,7 +144,8 @@ local bulbasaur = {
   desc="pokemon.bulbasaur.description",
   loc="pokemon:bulbasaur",
   id=1,
-  Stats={atk=49,def=49,special=65,spdef=65,speed=45,hp=45}
+  Stats={atk=49,def=49,special=65,spdef=65,speed=45,hp=45},
+  nationalDexHint = 1
 };
 
 
@@ -155,15 +156,24 @@ local arceus = {
  description={type="translateble",text="pokemon.arceus.description"},
  loc="pokemon:arceus",
  Stats={atk=120,def=120,special=120,spdef=120,speed=120,hp=120},
- types={Constants.Types.NORMAL},
+ types={"pokemon:normal"},
  traits={"pokemon:notshiny","pokemon:legendary"},
- id=493,
+ naturalDexHint=493,
  abilities={"pokemon:multitype"},
  startMoves={"pokemon:judgement","pokemon:sharpen_attack"},
  levelUpMoves={
   [70]={"pokemon:time_roar","pokemon:damage_space","pokemon:shadow_force2"}
  }
 };
+
+function arceus:getType()
+  if self:getItem():isType("pokemon:arceus_plate") then
+    return Registries:getType(self:getItem():getField("type"));
+  else
+    return Registries:getType("pokemon:normal");
+  end
+end
+
 function arceus:getImage(form)
   return "arceus."..form;
 end
@@ -175,15 +185,14 @@ local helios = {
   description={type="translateble",text="pokemon.helios.description"},
   loc="pokemon:helios",
   Stats={atk=120,def=120,special=120,spdef=120,speed=120,hp=120},
-  types={Constants.Types.SOLAR},
+  types={"pokemon:solar"},
   traits={"pokemon:notshiny","pokemon:legendary"},
-  id=803,
+  nationalDexHint=810,
   abilities={"pokemon:awaken"},
   startMoves={"pokemon:sun_lance","pokemon:morning_sun"},
   forms= {}
-
 };
-helios.forms[1] = {Stats={atk=140,def=140,special=140,spdef=140,speed=140,hp=120}};
+helios.forms.awakened = {Stats={atk=140,def=140,special=140,spdef=140,speed=140,hp=120}};
 
 function helios:getForm(pkm)
   if pkm:getHp()<0.5 then return 1 else return 0 end
